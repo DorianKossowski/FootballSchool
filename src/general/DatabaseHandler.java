@@ -1,4 +1,4 @@
-package main;
+package general;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-class DatabaseHandler {
+public class DatabaseHandler {
 
     private static Connection conn = null;
 
@@ -58,7 +58,7 @@ class DatabaseHandler {
     /**
      * @return class instance
      */
-    static DatabaseHandler getInstance() {
+    public static DatabaseHandler getInstance() {
         return DBHolder.INSTANCE;
     }
 
@@ -102,7 +102,7 @@ class DatabaseHandler {
     /**
      * Closing database connection. Triggering after closing stage.
      */
-    void closeConnection() {
+    public void closeConnection() {
         if (conn != null) {
             try {
                 conn.close();
@@ -116,7 +116,7 @@ class DatabaseHandler {
     /**
      * @return database connection
      */
-    static Connection getConnection() {
+    public static Connection getConnection() {
         return conn;
     }
 }

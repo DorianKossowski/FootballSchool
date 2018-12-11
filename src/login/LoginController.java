@@ -1,4 +1,4 @@
-package main;
+package login;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import general.DatabaseHandler;
+import main.MainController;
+import general.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -17,7 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class LoginController{
+public class LoginController {
     @FXML
     TextField login;
     @FXML
@@ -27,24 +30,41 @@ public class LoginController{
     @FXML
     Button loginButton;
 
-    User currentUser;
+    private User currentUser;
 
 
-    void enterListener(Scene currentScene) {
+    /**
+     * @param currentScene where listeners are staying awake
+     */
+    public void setListeners(Scene currentScene) {
         currentScene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 loginButton.fire();
             }
         });
+
+        login.textProperty().addListener( observable -> {
+            if(userValidError.isVisible()) {
+                userValidError.setVisible(false);
+            }
+        });
+        password.textProperty().addListener( observable -> {
+            if(userValidError.isVisible()) {
+                userValidError.setVisible(false);
+            }
+        });
     }
 
+    /**
+     * @param event connected with LOGIN button
+     * after correct user validation, changes to main scene
+     */
     @FXML
-    public void userLogin(ActionEvent event) {
-        userValidError.setVisible(false);
+    private void userLogin(ActionEvent event) {
         if(userValidation(login.getText(), password.getText())) {
             try {
                 MainController controller = new MainController(currentUser);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../main/main.fxml"));
                 loader.setController(controller);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 Scene scene = new Scene(loader.load());
@@ -58,6 +78,12 @@ public class LoginController{
         }
     }
 
+    /**
+     * @param login entered user login
+     * @param password entered user password
+     * @return  is that user in database
+     * checks if user exists in database
+     */
     private boolean userValidation(String login, String password) {
         try {
             Connection conn = DatabaseHandler.getConnection();
