@@ -18,7 +18,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </VBox.margin>
                 </ImageView>
-                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Aktualności" textFill="WHITE">
+                <Button fx:id="homeButton" alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Aktualności" textFill="WHITE">
                     <VBox.margin>
                         <Insets top="10.0" />
                     </VBox.margin>
@@ -26,7 +26,7 @@
                         <Font size="18.0" />
                     </font>
                 </Button>
-                <Button alignment="CENTER" layoutX="10.0" layoutY="141.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Terminarz" textFill="WHITE">
+                <Button fx:id="fixturesButton" alignment="CENTER" layoutX="10.0" layoutY="141.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Terminarz" textFill="WHITE">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -34,7 +34,7 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
-                <Button alignment="CENTER" layoutX="10.0" layoutY="194.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Drużyna" textFill="WHITE">
+                <Button fx:id="teamButton" alignment="CENTER" layoutX="10.0" layoutY="194.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Drużyna" textFill="WHITE">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -42,8 +42,29 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
+            <Button fx:id="paymentsButton" alignment="CENTER" layoutX="10.0" layoutY="550.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Płatności" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
                 <Region VBox.vgrow="ALWAYS" />
-            <Button alignment="CENTER" layoutX="10.0" layoutY="239.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Płatności" textFill="WHITE">
+            <Button fx:id="coachesButton" alignment="CENTER" layoutX="11.0" layoutY="501.0" mnemonicParsing="false" onAction="#coachesOnClick" prefHeight="35.0" prefWidth="120.0" style="-fx-font-style: italic; -fx-font-size: 18px;" stylesheets="@resources/menuBar.css" text="Trenerzy" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="monthsButton" alignment="CENTER" layoutX="11.0" layoutY="288.0" mnemonicParsing="false" onAction="#monthsOnClick" prefHeight="35.0" prefWidth="120.0" style="-fx-font-style: italic; -fx-font-size: 18px;" stylesheets="@resources/menuBar.css" text="Miesiące" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="changePassButton" alignment="CENTER" layoutX="10.0" layoutY="239.0" mnemonicParsing="false" stylesheets="@resources/menuBar.css" text="Zmień hasło" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>

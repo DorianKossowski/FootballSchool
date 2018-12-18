@@ -21,11 +21,12 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     @FXML
-    Text helloUser;
+    private Text helloUser;
     @FXML
-    Button logoutButton;
+    private Button homeButton, fixturesButton, teamButton, paymentsButton, coachesButton,
+            monthsButton, changePassButton, logoutButton;
     @FXML
-    BorderPane borderPane;
+    private BorderPane borderPane;
 
     private User currentUser;
 
@@ -38,21 +39,73 @@ public class MainController implements Initializable {
 
     /**
      * sets welcome text and assigns logout button
+     * loads proper content to scene
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         helloUser.setText("Witaj " + currentUser.getName());
         logoutButton.setOnAction(this::userLogout);
 
+        Parent root = null;
+
         if(currentUser.getUserType() == User.Type.ADMIN) {
-            Parent root = null;
+
             try {
-                root = FXMLLoader.load(getClass().getResource("admin.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("adminCoaches.fxml"));
+                root = loader.load();
+                ACoachesController aController = loader.getController();
+                aController.setListeners();
+                adminMenuBar();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             borderPane.setCenter(root);
         }
+    }
+
+    /**
+     * sets buttons properties for admin in menu bar
+     */
+    private void adminMenuBar() {
+        homeButton.setDisable(true); fixturesButton.setDisable(true);
+        teamButton.setDisable(true); paymentsButton.setDisable(true);
+        coachesButton.setVisible(true); monthsButton.setVisible(true);
+    }
+
+    /**
+     * call on click coachesButton
+     */
+    @FXML
+    private void coachesOnClick() {
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminCoaches.fxml"));
+            root = loader.load();
+            ACoachesController aController = loader.getController();
+            aController.setListeners();
+            adminMenuBar();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
+    }
+
+    /**
+     * call on click monthsButton
+     */
+    @FXML
+    private void monthsOnClick() {
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminMonths.fxml"));
+            root = loader.load();
+            AMonthsController aController = loader.getController();
+//            aController.setListeners();
+            adminMenuBar();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
     }
 
     /**

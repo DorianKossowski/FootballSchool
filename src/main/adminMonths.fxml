@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AMonthsController">
+    <children>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj miesiąc:" textAlignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </VBox.margin>
+        </Text>
+          <TextField fx:id="coachName" maxWidth="-Infinity" promptText="Nazwa">
+              <font>
+                  <Font size="14.0" />
+              </font>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+          </TextField>
+        <Text fx:id="warningText" strokeType="OUTSIDE" strokeWidth="0.0" text="Podaj odpowiednie wartości w polach Imię i Nazwisko" visible="false">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Text>
+        <Button fx:id="addCoachButton" alignment="CENTER" mnemonicParsing="false" text="Dodaj">
+            <font>
+                <Font size="16.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+        </Button>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista miesięcy:">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+            </VBox.margin>
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+        <TableView fx:id="coachesTable" fixedCellSize="30.0" maxWidth="125.0">
+            <columns>
+                <TableColumn fx:id="nameCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Nazwa" />
+            </columns>
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </TableView>
+    </children>
+</VBox>

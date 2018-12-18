@@ -14,6 +14,7 @@ import java.util.Properties;
 public class DatabaseHandler {
 
     private static Connection conn = null;
+    private Session session = null;
 
     private String strSshUser, strSshHost, strRemoteHost, strSshPassword;
     private String databaseUser, databasePassword;
@@ -70,7 +71,7 @@ public class DatabaseHandler {
         int remotePort = 5432;
         try {
             final JSch jsch = new JSch();
-            Session session = jsch.getSession(strSshUser, strSshHost, 22);
+            session = jsch.getSession(strSshUser, strSshHost, 22);
             session.setPassword(strSshPassword);
 
             final Properties config = new Properties();
@@ -107,6 +108,8 @@ public class DatabaseHandler {
             try {
                 conn.close();
                 System.out.println("Database connection terminated");
+                session.disconnect();
+                System.out.println("SSH disconnected");
             } catch (Exception e) {
                 System.out.println("Close connection problem");
             }

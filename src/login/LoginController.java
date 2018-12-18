@@ -93,6 +93,7 @@ public class LoginController {
             if(rs.next()) {
                 currentUser = new User(rs.getString("imie"), rs.getString("nazwisko"),
                         rs.getInt("id_tu"));
+                st.close();
                 return true;
             }
         } catch (SQLException e) {
