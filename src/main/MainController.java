@@ -73,7 +73,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     * call on click coachesButton
+     * being called on click coachesButton
      */
     @FXML
     private void coachesOnClick() {
@@ -91,7 +91,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     * call on click monthsButton
+     * being called on click monthsButton
      */
     @FXML
     private void monthsOnClick() {
@@ -99,8 +99,26 @@ public class MainController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("adminMonths.fxml"));
             root = loader.load();
-            AMonthsController aController = loader.getController();
             adminMenuBar();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
+    }
+
+    /**
+     * being called on click changePassButton
+     */
+    @FXML
+    private void changePassOnClick() {
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("changePassword.fxml"));
+            root = loader.load();
+            ChangePassController cpController = loader.getController();
+            cpController.userInit(currentUser);
+            if(currentUser.getUserType() == User.Type.ADMIN)
+                adminMenuBar();
         } catch (IOException e) {
             e.printStackTrace();
         }

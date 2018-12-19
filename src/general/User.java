@@ -1,7 +1,7 @@
 package general;
 
 public class User {
-    private String name, surname;
+    private String name, surname, login;
     private Type userType;
 
     public enum Type{
@@ -12,10 +12,13 @@ public class User {
      * @param n name of logged user
      * @param s surname of logged user
      * @param type type of logged user (admin, coach, parent)
+     * @param login
      */
-    public User(String n, String s, int type) {
+    public User(String n, String s, int type, String l) {
         name = n;
         surname = s;
+        login = l;
+
         switch (type) {
             case 1:
                 userType = Type.ADMIN;
@@ -49,5 +52,12 @@ public class User {
      */
     public String getSurname() {
         return surname;
+    }
+
+    /**
+     * @return login of looged user
+     */
+    public String getLogin() {
+        return login;
     }
 }

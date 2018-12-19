@@ -92,7 +92,7 @@ public class LoginController {
                     "haslo='" + password + "';");
             if(rs.next()) {
                 currentUser = new User(rs.getString("imie"), rs.getString("nazwisko"),
-                        rs.getInt("id_tu"));
+                        rs.getInt("id_tu"), login);
                 st.close();
                 return true;
             }

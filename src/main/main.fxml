@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <left>
         <VBox alignment="TOP_CENTER" fillWidth="false" style="-fx-background-color: #2D3447;" BorderPane.alignment="CENTER">
@@ -64,7 +67,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="changePassButton" alignment="CENTER" layoutX="10.0" layoutY="239.0" mnemonicParsing="false" stylesheets="@resources/menuBar.css" text="Zmień hasło" textFill="WHITE">
+            <Button fx:id="changePassButton" alignment="CENTER" layoutX="10.0" layoutY="239.0" mnemonicParsing="false" onAction="#changePassOnClick" stylesheets="@resources/menuBar.css" text="Zmień hasło" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
