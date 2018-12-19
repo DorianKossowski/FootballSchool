@@ -31,8 +31,6 @@ public class ACoachesController implements Initializable {
     @FXML
     private TextField coachName, coachSurname;
     @FXML
-    private Button addCoachButton;
-    @FXML
     private Text warningText;
 
     public static class Coach {
@@ -94,6 +92,9 @@ public class ACoachesController implements Initializable {
         setTableHeight();
     }
 
+    /**
+     * adjusts table height towards number of rows
+     */
     private void setTableHeight() {
         coachesTable.prefHeightProperty().bind(coachesTable.fixedCellSizeProperty().
                 multiply(Bindings.size(coachesTable.getItems())).add(20).add(15));  //margin + header height

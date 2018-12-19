@@ -100,7 +100,6 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("adminMonths.fxml"));
             root = loader.load();
             AMonthsController aController = loader.getController();
-//            aController.setListeners();
             adminMenuBar();
         } catch (IOException e) {
             e.printStackTrace();

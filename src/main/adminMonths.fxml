@@ -14,7 +14,7 @@
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </VBox.margin>
         </Text>
-          <TextField fx:id="coachName" maxWidth="-Infinity" promptText="Nazwa">
+          <TextField fx:id="monthName" maxWidth="-Infinity" promptText="Nazwa">
               <font>
                   <Font size="14.0" />
               </font>
@@ -27,7 +27,7 @@
                 <Font size="14.0" />
             </font>
         </Text>
-        <Button fx:id="addCoachButton" alignment="CENTER" mnemonicParsing="false" text="Dodaj">
+        <Button fx:id="addMonthButton" alignment="CENTER" mnemonicParsing="false" onAction="#addNewMonth" text="Dodaj">
             <font>
                 <Font size="16.0" />
             </font>
@@ -43,7 +43,7 @@
                 <Font size="24.0" />
             </font>
         </Text>
-        <TableView fx:id="coachesTable" fixedCellSize="30.0" maxWidth="125.0">
+        <TableView fx:id="monthsTable" fixedCellSize="30.0" maxWidth="125.0">
             <columns>
                 <TableColumn fx:id="nameCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Nazwa" />
             </columns>
