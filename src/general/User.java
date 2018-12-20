@@ -3,6 +3,8 @@ package general;
 public class User {
     private String name, surname, login;
     private Type userType;
+    private int id;
+
 
     public enum Type{
         ADMIN, COACH, PARENT
@@ -12,12 +14,14 @@ public class User {
      * @param n name of logged user
      * @param s surname of logged user
      * @param type type of logged user (admin, coach, parent)
-     * @param login
+     * @param l login of logged user
+     * @param i id of logged user
      */
-    public User(String n, String s, int type, String l) {
+    public User(String n, String s, int type, String l, int i) {
         name = n;
         surname = s;
         login = l;
+        id = i;
 
         switch (type) {
             case 1:
@@ -55,9 +59,16 @@ public class User {
     }
 
     /**
-     * @return login of looged user
+     * @return login of logged user
      */
     public String getLogin() {
         return login;
+    }
+
+    /**
+     * @return id of logged user
+     */
+    public int getId() {
+        return id;
     }
 }

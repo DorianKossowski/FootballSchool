@@ -67,12 +67,8 @@ public class ChangePassController {
      * @return if entered values (passwords) are correct
      */
     private boolean changeValidation() {
-        if(!newPassword.getText().equals(newPassword2.getText()) || newPassword.getLength()<5
-            || oldPassword.getText().equals(newPassword.getText())) {
-            warningText.setText("Podano złe wartości");
-            return false;
-        }
-        return true;
+        return newPassword.getText().equals(newPassword2.getText()) && newPassword.getLength() >= 5
+                && !oldPassword.getText().equals(newPassword.getText());
     }
 
     /**
@@ -94,11 +90,14 @@ public class ChangePassController {
                 oldPassword.setText("");
                 newPassword.setText("");
                 newPassword2.setText("");
-                warningText.setVisible(true);
                 warningText.setText("Poprawnie zmieniono hasło");
+                warningText.setVisible(true);
+            }
+            else {
+                warningText.setText("Podano złe wartości");
             }
         } catch (SQLException e) {
-            warningText.setText("Podano złe wartości");
+            e.printStackTrace();
         }
     }
 }

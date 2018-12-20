@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import login.LoginController;
+import main.admin.ACoachesController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,7 +52,7 @@ public class MainController implements Initializable {
         if(currentUser.getUserType() == User.Type.ADMIN) {
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("adminCoaches.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminCoaches.fxml"));
                 root = loader.load();
                 ACoachesController aController = loader.getController();
                 aController.setListeners();
@@ -79,7 +80,7 @@ public class MainController implements Initializable {
     private void coachesOnClick() {
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminCoaches.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminCoaches.fxml"));
             root = loader.load();
             ACoachesController aController = loader.getController();
             aController.setListeners();
@@ -97,7 +98,7 @@ public class MainController implements Initializable {
     private void monthsOnClick() {
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminMonths.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminMonths.fxml"));
             root = loader.load();
             adminMenuBar();
         } catch (IOException e) {
@@ -119,6 +120,24 @@ public class MainController implements Initializable {
             cpController.userInit(currentUser);
             if(currentUser.getUserType() == User.Type.ADMIN)
                 adminMenuBar();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
+    }
+
+    /**
+     * being called on click teamButton
+     */
+    @FXML
+    private void teamOnClick() {
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("team.fxml"));
+            root = loader.load();
+            TeamController tController = loader.getController();
+            tController.userInit(currentUser);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

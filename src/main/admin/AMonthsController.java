@@ -1,4 +1,4 @@
-package main;
+package main.admin;
 
 import general.DatabaseHandler;
 import javafx.beans.binding.Bindings;

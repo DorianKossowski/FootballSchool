@@ -1,4 +1,4 @@
-package main;
+package main.admin;
 
 import general.DatabaseHandler;
 import javafx.beans.binding.Bindings;
@@ -87,8 +87,10 @@ public class ACoachesController implements Initializable {
         surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
         loginCol.setCellValueFactory(new PropertyValueFactory<>("login"));
         passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
+
         setCoachesTable();
         setTableHeight();
+
     }
 
     /**

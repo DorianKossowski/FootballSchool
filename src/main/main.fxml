@@ -37,7 +37,7 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
-                <Button fx:id="teamButton" alignment="CENTER" layoutX="10.0" layoutY="194.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Drużyna" textFill="WHITE">
+                <Button fx:id="teamButton" alignment="CENTER" layoutX="10.0" layoutY="194.0" mnemonicParsing="false" onAction="#teamOnClick" prefHeight="35.0" prefWidth="120.0" stylesheets="@resources/menuBar.css" text="Drużyna" textFill="WHITE">
                     <font>
                         <Font size="18.0" />
                     </font>
