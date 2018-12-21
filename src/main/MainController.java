@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import login.LoginController;
@@ -30,6 +32,7 @@ public class MainController implements Initializable {
     private BorderPane borderPane;
 
     private User currentUser;
+    private Button activeTab;
 
     /**
      * @param u currently logged user
@@ -39,18 +42,32 @@ public class MainController implements Initializable {
     }
 
     /**
+     * @param newActiveTab currently active tab in menu
+     * sets bold property to active tab button in menu
+     */
+    private void setBoldFont(Button newActiveTab) {
+        if(newActiveTab != activeTab) {
+            activeTab.setFont(Font.font("System", 18));
+            activeTab = newActiveTab;
+        }
+        activeTab.setFont(Font.font("System", FontWeight.BOLD, 18));
+    }
+
+    /**
      * sets welcome text and assigns logout button
      * loads proper content to scene
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        activeTab = homeButton;
+        setBoldFont(homeButton);
         helloUser.setText("Witaj " + currentUser.getName());
         logoutButton.setOnAction(this::userLogout);
 
         Parent root = null;
 
         if(currentUser.getUserType() == User.Type.ADMIN) {
-
+            setBoldFont(coachesButton);
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminCoaches.fxml"));
                 root = loader.load();
@@ -78,6 +95,7 @@ public class MainController implements Initializable {
      */
     @FXML
     private void coachesOnClick() {
+        setBoldFont(coachesButton);
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminCoaches.fxml"));
@@ -96,6 +114,7 @@ public class MainController implements Initializable {
      */
     @FXML
     private void monthsOnClick() {
+        setBoldFont(monthsButton);
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminMonths.fxml"));
@@ -112,6 +131,7 @@ public class MainController implements Initializable {
      */
     @FXML
     private void changePassOnClick() {
+        setBoldFont(changePassButton);
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("changePassword.fxml"));
@@ -131,12 +151,13 @@ public class MainController implements Initializable {
      */
     @FXML
     private void teamOnClick() {
+        setBoldFont(teamButton);
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
-            tController.userInit(currentUser);
+            tController.userInit(currentUser, borderPane);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -49,7 +49,7 @@ public class AMonthsController implements Initializable {
      */
     private void setMonthsTable() {
         try {
-            Connection conn = DatabaseHandler.getConnection();
+            Connection conn = DatabaseHandler.getInstance().getConnection();;
             Statement st = conn.createStatement();
 
             ObservableList<String> monthsInDB = FXCollections.observableArrayList();
@@ -73,7 +73,7 @@ public class AMonthsController implements Initializable {
     @FXML
     private void addNewMonth() {
         try {
-            Connection conn = DatabaseHandler.getConnection();
+            Connection conn = DatabaseHandler.getInstance().getConnection();;
             Statement st = conn.createStatement();
 
             st.execute("insert into szkolka.miesiac(nazwa) values('" + monthName.getText() + "');");

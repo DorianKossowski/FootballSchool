@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="wholeArea" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AddPlayerController">
+    <children>
+        <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj zawodnika:" textAlignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="15.0" left="25.0" right="25.0" top="25.0" />
+            </VBox.margin>
+        </Text>
+          <HBox alignment="CENTER">
+              <children>
+                  <TextField fx:id="newTeamName" prefHeight="30.0" prefWidth="200.0" promptText="Imię">
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+                  </TextField>
+            <TextField fx:id="newTeamName1" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" promptText="Nazwisko">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </TextField>
+              </children>
+          </HBox>
+      <ComboBox promptText="Rocznik">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </ComboBox>
+          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rodzic:">
+              <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+              </VBox.margin>
+              <font>
+                  <Font name="System Italic" size="24.0" />
+              </font>
+          </Text>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="82.0">
+         <children>
+            <TextField fx:id="newTeamName1" prefHeight="30.0" prefWidth="200.0" promptText="Imię">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField fx:id="newTeamName11" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" promptText="Nazwisko">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+          <HBox alignment="CENTER">
+              <children>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToPreviousScene" text="Powrót">
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+                      <HBox.margin>
+                          <Insets left="10.0" right="10.0" />
+                      </HBox.margin>
+                  </Button>
+                  <Button disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Dodaj">
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+                      <HBox.margin>
+                          <Insets left="10.0" right="10.0" />
+                      </HBox.margin>
+                  </Button>
+              </children>
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+         </VBox.margin>
+          </HBox>
+    </children>
+</VBox>

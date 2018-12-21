@@ -13,7 +13,7 @@ import java.util.Properties;
 
 public class DatabaseHandler {
 
-    private static Connection conn = null;
+    private Connection conn = null;
     private Session session = null;
 
     private String strSshUser, strSshHost, strRemoteHost, strSshPassword;
@@ -119,7 +119,7 @@ public class DatabaseHandler {
     /**
      * @return database connection
      */
-    public static Connection getConnection() {
+    public Connection getConnection() {
         return conn;
     }
 }

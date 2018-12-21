@@ -78,7 +78,7 @@ public class ChangePassController {
     private void changePassword() {
         try {
             warningText.setVisible(true);
-            Connection conn = DatabaseHandler.getConnection();
+            Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("select 1 from szkolka.uzytkownik where login='" + currentLogin + "' " +
                     "and haslo='" + oldPassword.getText() + "';");

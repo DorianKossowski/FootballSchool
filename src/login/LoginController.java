@@ -86,7 +86,7 @@ public class LoginController {
      */
     private boolean userValidation(String login, String password) {
         try {
-            Connection conn = DatabaseHandler.getConnection();
+            Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("select * from szkolka.uzytkownik where login='" + login + "' and " +
                     "haslo='" + password + "';");

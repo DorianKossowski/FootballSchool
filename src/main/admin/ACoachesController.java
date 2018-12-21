@@ -106,7 +106,7 @@ public class ACoachesController implements Initializable {
      */
     private void setCoachesTable() {
         try {
-            Connection conn = DatabaseHandler.getConnection();
+            Connection conn = DatabaseHandler.getInstance().getConnection();;
             Statement st = conn.createStatement();
 
             ObservableList<Coach> coachesInDB = FXCollections.observableArrayList();
@@ -131,7 +131,7 @@ public class ACoachesController implements Initializable {
     @FXML
     private void addNewCoach() {
         try {
-            Connection conn = DatabaseHandler.getConnection();
+            Connection conn = DatabaseHandler.getInstance().getConnection();;
             Statement st = conn.createStatement();
 
             st.execute("insert into szkolka.uzytkownik(imie, nazwisko, id_tu) values('" +
