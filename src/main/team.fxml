@@ -70,11 +70,14 @@
                   </Button>
                </children>
             </HBox>
-              <TableView fx:id="coachesTable" fixedCellSize="30.0" maxWidth="325.0">
+              <TableView fx:id="playersTable" fixedCellSize="30.0" maxWidth="325.0">
+                  <placeholder>
+                      <Label text="Brak zawodników w bazie danych"/>
+                  </placeholder>
                   <columns>
                       <TableColumn fx:id="nameCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Imię" />
                       <TableColumn fx:id="surnameCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Nazwisko" />
-                      <TableColumn fx:id="loginCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Rocznik" />
+                      <TableColumn fx:id="yearCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Rocznik" />
                   </columns>
                   <VBox.margin>
                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

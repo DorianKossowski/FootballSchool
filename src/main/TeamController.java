@@ -2,10 +2,18 @@ package main;
 
 import general.DatabaseHandler;
 import general.User;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -17,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.scene.control.TextField;
+import main.admin.ACoachesController;
 
 public class TeamController {
     @FXML
@@ -29,9 +38,42 @@ public class TeamController {
     private Button createTeamButton, addPlayerButton;
     @FXML
     private BorderPane borderPane;
+    @FXML
+    private TableView<Player> playersTable;
+    @FXML
+    private TableColumn<Player, String> nameCol, surnameCol;
+    @FXML
+    private TableColumn<Player, Integer> yearCol;
 
     private User loggedUser;
     private int currentTeamId;
+
+    /**
+     * supplementary player class necessary to table creation
+     */
+    public static class Player {
+        private final SimpleStringProperty name = new SimpleStringProperty();
+        private final SimpleStringProperty surname = new SimpleStringProperty();
+        private final SimpleIntegerProperty year = new SimpleIntegerProperty();
+
+        Player(String name, String surname, Integer year) {
+            this.name.set(name);
+            this.surname.set(surname);
+            this.year.set(year);
+        }
+
+        public String getName() {
+            return name.get();
+        }
+
+        public String getSurname() {
+            return surname.get();
+        }
+
+        public int getYear() {
+            return year.get();
+        }
+    }
 
     void userInit(User currentUser, BorderPane pane) {
         loggedUser = currentUser;
@@ -39,6 +81,11 @@ public class TeamController {
         if(loggedUser.getUserType() == User.Type.COACH) {
             if(coachHasTeam(loggedUser.getId())) {
                 wholeArea.getChildren().remove(teamCreationArea);
+
+                nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+                surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
+                yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
+                setPlayersTable();
                 playersArea.setVisible(true);
             }
         } else {
@@ -97,6 +144,10 @@ public class TeamController {
         }
     }
 
+    /**
+     * being called on click addPlayerButton
+     * changes scene to player creation scene
+     */
     @FXML
     private void addPlayer() {
         Parent root = null;
@@ -110,5 +161,36 @@ public class TeamController {
             e.printStackTrace();
         }
         borderPane.setCenter(root);
+    }
+
+    /**
+     * adjusts table height towards number of rows
+     */
+    private void setTableHeight() {
+        playersTable.prefHeightProperty().bind(playersTable.fixedCellSizeProperty().
+                multiply(Bindings.size(playersTable.getItems())).add(20).add(15));  //margin + header height
+    }
+
+    /**
+     * loads players from current team stored in DB
+     */
+    private void setPlayersTable() {
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            Statement st = conn.createStatement();
+
+            ObservableList<TeamController.Player> playersInDB = FXCollections.observableArrayList();
+
+            ResultSet rs = st.executeQuery("select * from szkolka.pilkarz where id_d=" + currentTeamId + ";");
+            while(rs.next()) {
+                playersInDB.add(new Player(rs.getString("imie"), rs.getString("nazwisko"),
+                        rs.getInt("rocznik")));
+            }
+            playersTable.setItems(playersInDB);
+            setTableHeight();
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

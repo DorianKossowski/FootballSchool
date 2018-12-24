@@ -73,7 +73,7 @@ public class AMonthsController implements Initializable {
     @FXML
     private void addNewMonth() {
         try {
-            Connection conn = DatabaseHandler.getInstance().getConnection();;
+            Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
 
             st.execute("insert into szkolka.miesiac(nazwa) values('" + monthName.getText() + "');");

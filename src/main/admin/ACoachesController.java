@@ -32,6 +32,9 @@ public class ACoachesController implements Initializable {
     @FXML
     private Text warningText;
 
+    /**
+     * supplementary coach class necessary to table creation
+     */
     public static class Coach {
         private final SimpleStringProperty name = new SimpleStringProperty();
         private final SimpleStringProperty surname = new SimpleStringProperty();
@@ -102,7 +105,7 @@ public class ACoachesController implements Initializable {
     }
 
     /**
-     * loads from coaches stored in DB
+     * loads coaches stored in DB
      */
     private void setCoachesTable() {
         try {
