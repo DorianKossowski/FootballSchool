@@ -60,7 +60,7 @@
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Rodzic">
+                  <Button fx:id="parentButton" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#checkParent" text="Rodzic">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -70,9 +70,9 @@
                   </Button>
                </children>
             </HBox>
-              <TableView fx:id="playersTable" fixedCellSize="30.0" maxWidth="325.0">
+              <TableView fx:id="playersTable" fixedCellSize="30.0" maxWidth="325.0" onMouseClicked="#rowSelected">
                   <placeholder>
-                      <Label text="Brak zawodników w bazie danych"/>
+                      <Label text="Brak zawodników w bazie danych" />
                   </placeholder>
                   <columns>
                       <TableColumn fx:id="nameCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Imię" />

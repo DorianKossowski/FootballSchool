@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -35,7 +36,7 @@ public class TeamController {
     @FXML
     private TextField newTeamName;
     @FXML
-    private Button createTeamButton, addPlayerButton;
+    private Button createTeamButton, addPlayerButton, parentButton;
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -48,15 +49,19 @@ public class TeamController {
     private User loggedUser;
     private int currentTeamId;
 
+
+
     /**
      * supplementary player class necessary to table creation
      */
     public static class Player {
+        private final SimpleIntegerProperty id_p = new SimpleIntegerProperty();
         private final SimpleStringProperty name = new SimpleStringProperty();
         private final SimpleStringProperty surname = new SimpleStringProperty();
         private final SimpleIntegerProperty year = new SimpleIntegerProperty();
 
-        Player(String name, String surname, Integer year) {
+        Player(int id_p, String name, String surname, Integer year) {
+            this.id_p.set(id_p);
             this.name.set(name);
             this.surname.set(surname);
             this.year.set(year);
@@ -92,6 +97,17 @@ public class TeamController {
 
         }
 
+    }
+
+    @FXML
+    private void rowSelected() {
+        parentButton.setDisable(false);
+    }
+
+    @FXML
+    private void checkParent() {
+        Player selectedPlayer = playersTable.getSelectionModel().getSelectedItem();
+        System.out.println(selectedPlayer.name);
     }
 
     /**
@@ -183,7 +199,7 @@ public class TeamController {
 
             ResultSet rs = st.executeQuery("select * from szkolka.pilkarz where id_d=" + currentTeamId + ";");
             while(rs.next()) {
-                playersInDB.add(new Player(rs.getString("imie"), rs.getString("nazwisko"),
+                playersInDB.add(new Player(rs.getInt("id_p"), rs.getString("imie"), rs.getString("nazwisko"),
                         rs.getInt("rocznik")));
             }
             playersTable.setItems(playersInDB);
