@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import login.LoginController;
 import main.admin.ACoachesController;
+import main.team.TeamController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -154,7 +155,7 @@ public class MainController implements Initializable {
         setBoldFont(teamButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("team.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("team/team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
             tController.userInit(currentUser, borderPane);

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="wholeArea" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AddPlayerController">
+<VBox fx:id="wholeArea" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.team.AddPlayerController">
     <children>
         <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj zawodnika:" textAlignment="CENTER">
             <font>

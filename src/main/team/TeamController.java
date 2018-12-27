@@ -1,4 +1,4 @@
-package main;
+package main.team;
 
 import general.DatabaseHandler;
 import general.User;
@@ -14,19 +14,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.scene.control.TextField;
-import main.admin.ACoachesController;
 
 public class TeamController {
     @FXML
@@ -67,6 +64,10 @@ public class TeamController {
             this.year.set(year);
         }
 
+        public int getId_p() {
+            return id_p.get();
+        }
+
         public String getName() {
             return name.get();
         }
@@ -80,7 +81,7 @@ public class TeamController {
         }
     }
 
-    void userInit(User currentUser, BorderPane pane) {
+    public void userInit(User currentUser, BorderPane pane) {
         loggedUser = currentUser;
         borderPane = pane;
         if(loggedUser.getUserType() == User.Type.COACH) {
@@ -96,18 +97,35 @@ public class TeamController {
         } else {
 
         }
-
     }
 
+    /**
+     * being called after any action on table
+     */
     @FXML
     private void rowSelected() {
         parentButton.setDisable(false);
     }
 
+    /**
+     * available after row selection
+     * change scene to parent info scene
+     */
     @FXML
     private void checkParent() {
         Player selectedPlayer = playersTable.getSelectionModel().getSelectedItem();
-        System.out.println(selectedPlayer.name);
+
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("checkParent.fxml"));
+            root = loader.load();
+            CheckParentController cpController = loader.getController();
+            cpController.init(borderPane, loggedUser ,selectedPlayer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
     }
 
     /**

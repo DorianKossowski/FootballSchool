@@ -1,16 +1,13 @@
-package main;
+package main.team;
 
 import general.DatabaseHandler;
 import general.User;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -28,8 +25,6 @@ public class AddPlayerController {
     @FXML
     private BorderPane borderPane;
     @FXML
-    private Button backButton, addButton;
-    @FXML
     private ComboBox<Integer> yearBox;
     @FXML
     private TextField playerName, playerSurname, parentName, parentSurname;
@@ -40,6 +35,12 @@ public class AddPlayerController {
     private User loggedUser;
     private boolean yearIsValid;
 
+    /**
+     * @param borderPane previous whole team scene
+     * @param teamId coach's team id
+     * @param loggedUser currently logged user
+     * calls methods responsible for listeners and ComboBox
+     */
     void init(BorderPane borderPane, int teamId, User loggedUser) {
         this.borderPane = borderPane;
         this.teamId = teamId;
@@ -50,6 +51,9 @@ public class AddPlayerController {
     }
 
 
+    /**
+     * being called after any action on ComboBox
+     */
     @FXML
     private void handleYearBox() {
         if(warningText.isVisible()) {
@@ -58,6 +62,9 @@ public class AddPlayerController {
         yearIsValid = true;
     }
 
+    /**
+     * @return value of TextField has been changed
+     */
     private ChangeListener<String> textListener() {
         return (observable, oldValue, newValue) -> {
             if(warningText.isVisible()) {
@@ -76,6 +83,9 @@ public class AddPlayerController {
         parentSurname.textProperty().addListener(textListener());
     }
 
+    /**
+     * add available values of years to choose
+     */
     private void setYearBox() {
         final int MINYEAR = 4;
         final int MAXYEAR = 18;
@@ -87,6 +97,10 @@ public class AddPlayerController {
         yearBox.setItems(availableYears);
     }
 
+    /**
+     * being called after on click backButton
+     * sets previous scene
+     */
     @FXML
     private void backToPreviousScene() {
         Parent root = null;
@@ -101,6 +115,9 @@ public class AddPlayerController {
         borderPane.setCenter(root);
     }
 
+    /**
+     * after correct validation, inserts to DB new player and new parent
+     */
     @FXML
     private void addNewPlayer() {
         if(playerName.getText().isEmpty() || playerSurname.getText().isEmpty() || !yearIsValid ||
@@ -111,7 +128,7 @@ public class AddPlayerController {
         }
 
         try {
-            Connection conn = DatabaseHandler.getInstance().getConnection();;
+            Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
 
             ResultSet rs = st.executeQuery("insert into szkolka.uzytkownik(imie, nazwisko, id_tu) values('" +
