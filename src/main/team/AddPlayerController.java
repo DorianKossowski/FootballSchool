@@ -142,6 +142,10 @@ public class AddPlayerController {
 
             playerName.setText(""); playerSurname.setText("");
             parentName.setText(""); parentSurname.setText("");
+            yearBox.setValue(null);
+
+            warningText.setText("Poprawnie dodano zawodnika");
+            warningText.setVisible(true);
         } catch (SQLException e) {
             e.printStackTrace();
             warningText.setText("Podano złe dane");
