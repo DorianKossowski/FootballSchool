@@ -29,7 +29,7 @@
                         <Font size="18.0" />
                     </font>
                 </Button>
-                <Button fx:id="fixturesButton" alignment="CENTER" layoutX="10.0" layoutY="141.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="140.0" stylesheets="@resources/menuBar.css" text="Terminarz" textFill="WHITE">
+                <Button fx:id="fixturesButton" alignment="CENTER" layoutX="10.0" layoutY="141.0" mnemonicParsing="false" onAction="#fixturesOnClick" prefHeight="35.0" prefWidth="140.0" stylesheets="@resources/menuBar.css" text="Terminarz" textFill="WHITE">
                     <font>
                         <Font size="18.0" />
                     </font>

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.admin.ACoachesController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj nowego trenera:" textAlignment="CENTER">
@@ -47,9 +49,14 @@
             <Insets left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </Button>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </Separator>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista trenerów:">
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
          <font>
             <Font size="24.0" />
@@ -57,7 +64,7 @@
       </Text>
       <TableView fx:id="coachesTable" fixedCellSize="30.0" maxWidth="425.0">
          <placeholder>
-            <Label text="Brak trenerów w bazie danych"/>
+            <Label text="Brak trenerów w bazie danych" />
          </placeholder>
         <columns>
           <TableColumn fx:id="nameCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" resizable="false" style="-fx-alignment: center;" text="Imię" />

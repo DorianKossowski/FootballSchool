@@ -1,13 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox fx:id="wholeArea" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.FixturesController">
+    <children>
+      <VBox alignment="CENTER">
+         <children>
+              <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj mecz:" textAlignment="CENTER">
+                  <font>
+                      <Font size="24.0" />
+                  </font>
+                  <VBox.margin>
+                      <Insets bottom="15.0" left="25.0" right="25.0" top="25.0" />
+                  </VBox.margin>
+              </Text>
+                <TextField fx:id="opponentTextField" maxWidth="250.0" onKeyPressed="#setListener" promptText="Przeciwnik">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+                </TextField>
+            <DatePicker fx:id="datePic" editable="false" onAction="#setListener" promptText="Data">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </DatePicker>
+                <TextField fx:id="addressTextField" maxWidth="250.0" onKeyPressed="#setListener" promptText="Adres">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+                </TextField>
+              <Text fx:id="warningText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Uzupełnij wszystkie pola" visible="false">
+                  <font>
+                      <Font size="14.0" />
+                  </font>
+                  <VBox.margin>
+                      <Insets top="15.0" />
+                  </VBox.margin>
+              </Text>
+              <HBox alignment="CENTER">
+                  <children>
+                      <Button fx:id="addButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addNewMatch" prefWidth="75.0" text="Dodaj">
+                          <font>
+                              <Font size="14.0" />
+                          </font>
+                          <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                          </HBox.margin>
+                      </Button>
+                  </children>
+                  <VBox.margin>
+                      <Insets bottom="10.0" left="20.0" right="20.0" top="5.0" />
+                  </VBox.margin>
+              </HBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </Separator>
+         </children>
+      </VBox>
+      <Text fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa drużyny" textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <TableView fx:id="matchesTable" fixedCellSize="30.0" maxWidth="325.0">
+          <placeholder>
+              <Label text="Brak meczy w bazie danych" />
+          </placeholder>
+        <columns>
+          <TableColumn fx:id="dateCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" style="-fx-alignment: center;" text="Data" />
+          <TableColumn fx:id="opponentCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" style="-fx-alignment: center;" text="Przeciwnik" />
+            <TableColumn fx:id="addressCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" style="-fx-alignment: center;" text="Adres" />
+        </columns>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </TableView>
+    </children>
+</VBox>

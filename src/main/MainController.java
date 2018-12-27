@@ -1,5 +1,6 @@
 package main;
 
+import general.DatabaseHandler;
 import general.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,10 @@ import main.team.TeamController;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -79,6 +84,9 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
             borderPane.setCenter(root);
+        } else if(currentUser.getUserType() == User.Type.COACH && !coachHasTeam(currentUser.getId())) {
+            fixturesButton.setDisable(true);
+            paymentsButton.setDisable(true);
         }
     }
 
@@ -167,6 +175,24 @@ public class MainController implements Initializable {
     }
 
     /**
+     * being called on click fixturesButton
+     */
+    @FXML
+    private void fixturesOnClick() {
+        setBoldFont(fixturesButton);
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fixtures.fxml"));
+            root = loader.load();
+            FixturesController fController = loader.getController();
+            fController.userInit(currentUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
+    }
+
+    /**
      * @param event connected with LOGOUT
      * changes scene to login scene
      */
@@ -181,5 +207,25 @@ public class MainController implements Initializable {
         } catch (IOException io) {
             io.printStackTrace();
         }
+    }
+
+    /**
+     * @param coachId id of logged user->coach
+     * @return if currently logged coach has team
+     */
+    private boolean coachHasTeam(int coachId) {
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
+                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + coachId + ";");
+            if(rs.next()) {
+                st.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
