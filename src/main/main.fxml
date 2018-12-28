@@ -21,7 +21,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </VBox.margin>
                 </ImageView>
-                <Button fx:id="homeButton" alignment="CENTER" mnemonicParsing="false" prefWidth="140.0" stylesheets="@resources/menuBar.css" text="Aktualności" textFill="WHITE">
+                <Button fx:id="homeButton" alignment="CENTER" mnemonicParsing="false" onAction="#homeOnClick" prefWidth="140.0" stylesheets="@resources/menuBar.css" text="Aktualności" textFill="WHITE">
                     <VBox.margin>
                         <Insets top="10.0" />
                     </VBox.margin>

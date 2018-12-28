@@ -10,7 +10,7 @@ import general.DatabaseHandler;
 
 public class Main extends Application {
 
-    DatabaseHandler database;
+    private DatabaseHandler database;
 
     public static void main(String[] args) {
         launch(args);

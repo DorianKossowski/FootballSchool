@@ -68,27 +68,21 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         activeTab = homeButton;
-        setSelectedFont(homeButton);
         helloUser.setText("Witaj " + currentUser.getName());
         logoutButton.setOnAction(this::userLogout);
 
-        Parent root = null;
-
         if(currentUser.getUserType() == User.Type.ADMIN) {
-            setSelectedFont(coachesButton);
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminCoaches.fxml"));
-                root = loader.load();
-                ACoachesController aController = loader.getController();
-                aController.setListeners();
-                adminMenuBar();
-            } catch (IOException e) {
-                e.printStackTrace();
+            coachesOnClick();
+        } else {
+            if(currentUser.getUserType() == User.Type.COACH && !coachHasTeam(currentUser.getId())) {
+                fixturesButton.setDisable(true);
+                paymentsButton.setDisable(true);
+                homeButton.setDisable(true);
+                teamOnClick();
+            } else {
+                setSelectedFont(homeButton);
+                homeOnClick();
             }
-            borderPane.setCenter(root);
-        } else if(currentUser.getUserType() == User.Type.COACH && !coachHasTeam(currentUser.getId())) {
-            fixturesButton.setDisable(true);
-            paymentsButton.setDisable(true);
         }
     }
 
@@ -168,8 +162,10 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("team/team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
+            if(currentUser.getUserType() == User.Type.COACH) {
+                tController.buttonsInit(homeButton, fixturesButton, paymentsButton);
+            }
             tController.userInit(currentUser, borderPane);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -188,6 +184,24 @@ public class MainController implements Initializable {
             root = loader.load();
             FixturesController fController = loader.getController();
             fController.userInit(currentUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
+    }
+
+    /**
+     * being called on click fixturesButton
+     */
+    @FXML
+    private void homeOnClick() {
+        setSelectedFont(homeButton);
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+            root = loader.load();
+            HomeController hController = loader.getController();
+            hController.userInit(currentUser);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -45,7 +45,7 @@ public class TeamController {
 
     private User loggedUser;
     private int currentTeamId;
-
+    private Button homeButton, fixturesButton, paymentsButton;
 
 
     /**
@@ -97,6 +97,18 @@ public class TeamController {
         } else {
 
         }
+    }
+
+    /**
+     * @param homeButton connected with home tab
+     * @param fixturesButton connected with fixtures tab
+     * @param paymentsButton connected with payments tab
+     * buttons objects necessary to unlock features after team creation
+     */
+    public void buttonsInit(Button homeButton, Button fixturesButton, Button paymentsButton) {
+        this.homeButton = homeButton;
+        this.fixturesButton = fixturesButton;
+        this.paymentsButton = paymentsButton;
     }
 
     /**
@@ -169,6 +181,9 @@ public class TeamController {
                 wholeArea.getChildren().remove(teamCreationArea);
                 playersArea.setVisible(true);
                 coachHasTeam(loggedUser.getId());
+                homeButton.setDisable(false);
+                fixturesButton.setDisable(false);
+                paymentsButton.setDisable(false);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
