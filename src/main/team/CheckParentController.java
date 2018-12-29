@@ -19,7 +19,7 @@ public class CheckParentController {
     @FXML
     private BorderPane borderPane;
     @FXML
-    private Text playerName, parentName;
+    private Text playerName, parentName, loginText, passwordText;
 
     private User loggedUser;
 
@@ -50,6 +50,8 @@ public class CheckParentController {
                     "using(id_u) where p.id_p = " + id_p + ";");
             if(rs.next()) {
                 parentName.setText(rs.getString("imie") + " " + rs.getString("nazwisko"));
+                loginText.setText("login: " + rs.getString("login"));
+                passwordText.setText("hasło: " + rs.getString("haslo"));
             }
             st.close();
         } catch (SQLException e) {
