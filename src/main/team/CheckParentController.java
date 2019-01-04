@@ -19,7 +19,7 @@ public class CheckParentController {
     @FXML
     private BorderPane borderPane;
     @FXML
-    private Text playerName, parentName, loginText, passwordText;
+    private Text playerName, parentName, parentPhone, loginText, passwordText;
 
     private User loggedUser;
 
@@ -34,6 +34,7 @@ public class CheckParentController {
         this.loggedUser = loggedUser;
 
         playerName.setText(selectedPlayer.getName() + " " + selectedPlayer.getSurname());
+        parentPhone.setText("Telefon: " + selectedPlayer.getPhone());
         setParent(selectedPlayer.getId_p());
     }
 

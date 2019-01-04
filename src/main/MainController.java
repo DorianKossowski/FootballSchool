@@ -191,7 +191,25 @@ public class MainController implements Initializable {
     }
 
     /**
-     * being called on click fixturesButton
+     * being called on click paymentsButton
+     */
+    @FXML
+    private void paymentsOnClick() {
+        setSelectedFont(paymentsButton);
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("payments.fxml"));
+            root = loader.load();
+            PaymentsController pController = loader.getController();
+            pController.userInit(currentUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        borderPane.setCenter(root);
+    }
+
+    /**
+     * being called on click homeButton
      */
     @FXML
     private void homeOnClick() {

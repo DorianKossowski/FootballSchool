@@ -57,11 +57,14 @@ public class TeamController {
         private final SimpleStringProperty surname = new SimpleStringProperty();
         private final SimpleIntegerProperty year = new SimpleIntegerProperty();
 
-        Player(int id_p, String name, String surname, Integer year) {
+        private final String phone;
+
+        Player(int id_p, String name, String surname, Integer year, String phone) {
             this.id_p.set(id_p);
             this.name.set(name);
             this.surname.set(surname);
             this.year.set(year);
+            this.phone = phone;
         }
 
         public int getId_p() {
@@ -78,6 +81,10 @@ public class TeamController {
 
         public int getYear() {
             return year.get();
+        }
+
+        public String getPhone() {
+            return this.phone;
         }
     }
 
@@ -116,7 +123,9 @@ public class TeamController {
      */
     @FXML
     private void rowSelected() {
-        parentButton.setDisable(false);
+        if (playersTable.getItems().size() > 0) {
+            parentButton.setDisable(false);
+        }
     }
 
     /**
@@ -151,7 +160,7 @@ public class TeamController {
             ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
                     "join szkolka.uzytkownik as u using(id_u) where id_u=" + coachId + ";");
             if(rs.next()) {
-                mainText.setText("Nazwa drużyny: " + rs.getString("nazwa"));
+                mainText.setText(rs.getString("nazwa"));
                 currentTeamId = rs.getInt("id_d");
                 st.close();
                 return true;
@@ -233,7 +242,7 @@ public class TeamController {
             ResultSet rs = st.executeQuery("select * from szkolka.pilkarz where id_d=" + currentTeamId + ";");
             while(rs.next()) {
                 playersInDB.add(new Player(rs.getInt("id_p"), rs.getString("imie"), rs.getString("nazwisko"),
-                        rs.getInt("rocznik")));
+                        rs.getInt("rocznik"), rs.getString("telefon")));
             }
             playersTable.setItems(playersInDB);
             setTableHeight();

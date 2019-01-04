@@ -77,6 +77,14 @@
             </TextField>
          </children>
       </HBox>
+      <TextField fx:id="parentPhone" maxWidth="200.0" promptText="Numer telefonu">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </TextField>
       <Text fx:id="warningText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Podano złe dane" visible="false">
          <font>
             <Font size="14.0" />

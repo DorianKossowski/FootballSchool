@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="wholeArea" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.PaymentsController">
+    <children>
+        <VBox alignment="CENTER">
+            <children>
+                <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj wpłatę:" textAlignment="CENTER">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="15.0" left="25.0" right="25.0" top="25.0" />
+                    </VBox.margin>
+                </Text>
+            <HBox alignment="CENTER" layoutX="30.0" layoutY="239.0">
+               <children>
+                  <ComboBox fx:id="playerBox" layoutX="68.0" layoutY="10.0" onAction="#setAddPaymentFlag2" prefWidth="150.0" promptText="Zawodnik">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <ComboBox fx:id="monthsBox" onAction="#setAddPaymentFlag1" prefWidth="150.0" promptText="Miesiąc">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <ComboBox fx:id="yearToAddBox" layoutX="113.0" layoutY="10.0" prefWidth="80.0" promptText="Rok">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+                <HBox alignment="CENTER">
+                    <children>
+                        <Button fx:id="addButton" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="75.0" text="Dodaj">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="10.0" right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                    </VBox.margin>
+                </Separator>
+            </children>
+        </VBox>
+        <Text fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa drużyny" textAlignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+      <ComboBox fx:id="yearBox" onAction="#changeYear" prefWidth="80.0" promptText="Rok">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </ComboBox>
+        <TableView fx:id="paymentsTable" fixedCellSize="30.0" maxWidth="225.0">
+            <placeholder>
+                <Label text="Brak wpłat do wyświetlenia" />
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="nameCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" style="-fx-alignment: center;" text="Piłkarz" />
+            <TableColumn fx:id="monthCol" maxWidth="100.0" minWidth="-1.0" prefWidth="100.0" style="-fx-alignment: center;" text="Miesiąc" />
+            </columns>
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </TableView>
+    </children>
+</VBox>

@@ -27,7 +27,7 @@ public class AddPlayerController {
     @FXML
     private ComboBox<Integer> yearBox;
     @FXML
-    private TextField playerName, playerSurname, parentName, parentSurname;
+    private TextField playerName, playerSurname, parentName, parentSurname, parentPhone;
     @FXML
     private Text warningText;
 
@@ -81,6 +81,7 @@ public class AddPlayerController {
         playerSurname.textProperty().addListener(textListener());
         parentName.textProperty().addListener(textListener());
         parentSurname.textProperty().addListener(textListener());
+        parentPhone.textProperty().addListener(textListener());
     }
 
     /**
@@ -126,7 +127,7 @@ public class AddPlayerController {
             warningText.setVisible(true);
             return;
         }
-
+        int id_u = -1;
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
@@ -134,14 +135,15 @@ public class AddPlayerController {
             ResultSet rs = st.executeQuery("insert into szkolka.uzytkownik(imie, nazwisko, id_tu) values('" +
                     parentName.getText() + "', '" + parentSurname.getText() + "', 3) returning id_u;");
             if(rs.next()) {
-                int id_u = rs.getInt("id_u");
-                st.execute("insert into szkolka.pilkarz(id_u, id_d, imie, nazwisko, rocznik) values(" + id_u +
-                ", " + teamId + ", '" + playerName.getText() + "', '" + playerSurname.getText() + "', " + yearBox.getValue() + ");");
+                id_u = rs.getInt("id_u");
+                st.execute("insert into szkolka.pilkarz(id_u, id_d, imie, nazwisko, rocznik, telefon) values(" + id_u +
+                ", " + teamId + ", '" + playerName.getText() + "', '" + playerSurname.getText() + "', " + yearBox.getValue() +
+                        ", " + parentPhone.getText() + ");");
             }
             st.close();
 
             playerName.setText(""); playerSurname.setText("");
-            parentName.setText(""); parentSurname.setText("");
+            parentName.setText(""); parentSurname.setText(""); parentPhone.setText("");
             yearBox.setValue(null);
 
             warningText.setText("Poprawnie dodano zawodnika");
@@ -150,6 +152,16 @@ public class AddPlayerController {
             e.printStackTrace();
             warningText.setText("Podano złe dane");
             warningText.setVisible(true);
+            if(id_u != -1) {
+                try {
+                    Connection conn = DatabaseHandler.getInstance().getConnection();
+                    Statement st = conn.createStatement();
+                    st.execute("delete from szkolka.uzytkownik where id_u=" + id_u + ";");
+                    st.close();
+                } catch (SQLException exc) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

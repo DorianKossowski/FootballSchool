@@ -45,7 +45,7 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
-            <Button fx:id="paymentsButton" alignment="CENTER" layoutX="10.0" layoutY="550.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="140.0" stylesheets="@resources/menuBar.css" text="Płatności" textFill="WHITE">
+            <Button fx:id="paymentsButton" alignment="CENTER" layoutX="10.0" layoutY="550.0" mnemonicParsing="false" onAction="#paymentsOnClick" prefHeight="39.0" prefWidth="140.0" stylesheets="@resources/menuBar.css" text="Płatności" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
