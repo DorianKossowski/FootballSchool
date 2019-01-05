@@ -77,7 +77,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </ComboBox>
-        <TableView fx:id="paymentsTable" fixedCellSize="30.0" maxWidth="225.0">
+        <TableView fx:id="paymentsTable" fixedCellSize="30.0" maxWidth="225.0" onMouseClicked="#rowSelected">
             <placeholder>
                 <Label text="Brak wpłat do wyświetlenia" />
             </placeholder>
@@ -92,5 +92,13 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </TableView>
+      <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" prefWidth="75.0" text="Usuń">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Button>
     </children>
 </VBox>

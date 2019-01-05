@@ -32,7 +32,7 @@ public class PaymentsController  implements Initializable {
     @FXML
     private Text teamName, warningText;
     @FXML
-    private Button addButton;
+    private Button addButton, removeButton;
 
     @FXML
     private TableView<Payment> paymentsTable;
@@ -56,7 +56,12 @@ public class PaymentsController  implements Initializable {
         private final SimpleStringProperty name = new SimpleStringProperty();
         private final SimpleStringProperty month = new SimpleStringProperty();
 
-        Payment(String name, String month) {
+        private final int nameId;
+        private final int monthId;
+
+        Payment(String name, String month, int nameId, int monthId) {
+            this.nameId = nameId;
+            this.monthId = monthId;
             this.name.set(name);
             this.month.set(month);
         }
@@ -67,6 +72,14 @@ public class PaymentsController  implements Initializable {
 
         public String getMonth() {
             return month.get();
+        }
+
+        public int getNameId() {
+            return nameId;
+        }
+
+        public int getMonthId() {
+            return monthId;
         }
     }
 
@@ -124,7 +137,7 @@ public class PaymentsController  implements Initializable {
                     ObservableList<Payment> paymentsInDB = FXCollections.observableArrayList();
                     while(rs.next()) {
                         paymentsInDB.add(new Payment(rs.getString("imie") + " " + rs.getString("nazwisko"),
-                                rs.getString("nazwa")));
+                                rs.getString("nazwa"), rs.getInt("id_p"), rs.getInt("id_m")));
                     }
                     paymentsTable.setItems(paymentsInDB);
                     setTableHeight();
@@ -167,6 +180,9 @@ public class PaymentsController  implements Initializable {
     @FXML
     private void changeYear() {
         setTable();
+        if(!removeButton.isDisable()) {
+            removeButton.setDisable(true);
+        }
     }
 
     /**
@@ -262,6 +278,36 @@ public class PaymentsController  implements Initializable {
                 addPaymentFlag1 = addPaymentFlag2 = false;
                 addButton.setDisable(true);
                 setTable();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * being called after any action on table
+     */
+    @FXML
+    private void rowSelected() {
+        if (paymentsTable.getItems().size() > 0) {
+            removeButton.setDisable(false);
+        }
+    }
+
+    /**
+     * being called after on click removeButton
+     * delete selected record from DB
+     */
+    @FXML
+    private void setRemoveButton() {
+        Payment selectedRow = paymentsTable.getSelectionModel().getSelectedItem();
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            try (Statement st = conn.createStatement()) {
+                st.execute("delete from szkolka.wplata where id_p=" + selectedRow.getNameId() +
+                        " and id_m=" + selectedRow.getMonthId() + " and rok=" + yearBox.getValue() + ";");
+                paymentsTable.getItems().remove(paymentsTable.getSelectionModel().getSelectedItem());
+                removeButton.setDisable(true);
             }
         } catch (SQLException e) {
             e.printStackTrace();
