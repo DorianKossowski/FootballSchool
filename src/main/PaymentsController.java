@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -27,9 +28,9 @@ public class PaymentsController  implements Initializable {
     @FXML
     private ComboBox<Integer> yearToAddBox, yearBox;
     @FXML
-    private ComboBox<String> playerBox, monthsBox;
+    private ComboBox<Map.Entry<Integer, String>> playerBox, monthsBox;
     @FXML
-    private Text teamName;
+    private Text teamName, warningText;
     @FXML
     private Button addButton;
 
@@ -40,7 +41,6 @@ public class PaymentsController  implements Initializable {
 
     private User loggedUser;
     private boolean addPaymentFlag1, addPaymentFlag2;
-    private List<Map.Entry<Integer, String>> players = new ArrayList<>();
     private int currentTeamId;
 
     @Override
@@ -144,6 +144,8 @@ public class PaymentsController  implements Initializable {
         if(addPaymentFlag2) {
             addButton.setDisable(false);
         }
+        if(warningText.isVisible())
+            warningText.setVisible(false);
     }
 
     /**
@@ -155,6 +157,8 @@ public class PaymentsController  implements Initializable {
         if(addPaymentFlag1) {
             addButton.setDisable(false);
         }
+        if(warningText.isVisible())
+            warningText.setVisible(false);
     }
 
     /**
@@ -169,7 +173,21 @@ public class PaymentsController  implements Initializable {
      * add available values of ComboBox to choose - players, months and years
      */
     private void initBoxes() {
-        ObservableList<String> availablePlayers = FXCollections.observableArrayList();
+        //printing only values(names)
+        StringConverter<Map.Entry<Integer, String>> toComboBox = new StringConverter<>() {
+            @Override
+            public String toString(Map.Entry<Integer, String> object) {
+                return object.getValue();
+            }
+
+            @Override
+            public Map.Entry<Integer, String> fromString(String string) {
+                return null;
+            }
+        };
+
+        //PLAYERS
+        ObservableList<Map.Entry<Integer, String>> availablePlayers = FXCollections.observableArrayList();
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             try (Statement st = conn.createStatement()) {
@@ -178,8 +196,7 @@ public class PaymentsController  implements Initializable {
                     while(rs.next()) {
                         int tempId = rs.getInt("id_p");
                         String tempName = rs.getString("imie") + " " + rs.getString("nazwisko");
-                        players.add(Map.entry(tempId, tempName));
-                        availablePlayers.add(tempName);
+                        availablePlayers.add(Map.entry(tempId, tempName));
                     }
                 }
             }
@@ -187,14 +204,18 @@ public class PaymentsController  implements Initializable {
             e.printStackTrace();
         }
         playerBox.setItems(availablePlayers);
+        playerBox.setConverter(toComboBox);
 
-        ObservableList<String> availableMonths = FXCollections.observableArrayList();
+        //MONTHS
+        ObservableList<Map.Entry<Integer, String>> availableMonths = FXCollections.observableArrayList();
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery("select * from szkolka.miesiac;")) {
                     while(rs.next()) {
-                        availableMonths.add(rs.getString("nazwa"));
+                        int tempId = rs.getInt("id_m");
+                        String tempName = rs.getString("nazwa");
+                        availableMonths.add(Map.entry(tempId, tempName));
                     }
                 }
             }
@@ -202,15 +223,48 @@ public class PaymentsController  implements Initializable {
             e.printStackTrace();
         }
         monthsBox.setItems(availableMonths);
+        monthsBox.setConverter(toComboBox);
 
+        //YEARS
         ObservableList<Integer> availableYears = FXCollections.observableArrayList();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         for(int year = 2018; year <= currentYear; ++year){
             availableYears.add(year);
         }
-        yearToAddBox.setItems(availableYears);
-        yearToAddBox.setValue(currentYear);
-        yearBox.setItems(availableYears);
-        yearBox.setValue(currentYear);
+        yearToAddBox.setItems(availableYears); yearToAddBox.setValue(currentYear);
+        yearBox.setItems(availableYears); yearBox.setValue(currentYear);
+    }
+
+    /**
+     * check if new payment already exists, if not add new record to DB
+     */
+    @FXML
+    private void setAddButton() {
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            try (Statement st = conn.createStatement()) {
+                //check if record already exists id DB
+                try (ResultSet rs = st.executeQuery("select 1 from szkolka.wplata where id_p=" +
+                        playerBox.getValue().getKey() + " and id_m=" + monthsBox.getValue().getKey() +
+                        " and rok=" + yearToAddBox.getValue() + ";")) {
+                    if(rs.next()) {
+                        warningText.setVisible(true);
+                        return;
+                    }
+                }
+
+                //add new record
+                st.execute("insert into szkolka.wplata(id_p, id_m, rok, wplacono) values(" +
+                        playerBox.getValue().getKey() + "," + monthsBox.getValue().getKey() + "," +
+                        yearToAddBox.getValue() + ", true);");
+                playerBox.getSelectionModel().clearSelection();
+                monthsBox.getSelectionModel().clearSelection();
+                addPaymentFlag1 = addPaymentFlag2 = false;
+                addButton.setDisable(true);
+                setTable();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -37,9 +37,17 @@
                   </ComboBox>
                </children>
             </HBox>
+            <Text fx:id="warningText" fill="#ff0404" strokeType="OUTSIDE" strokeWidth="0.0" text="Jest już taka wpłata" textAlignment="CENTER" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Text>
                 <HBox alignment="CENTER">
                     <children>
-                        <Button fx:id="addButton" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="75.0" text="Dodaj">
+                        <Button fx:id="addButton" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#setAddButton" prefWidth="75.0" text="Dodaj">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -49,7 +57,7 @@
                         </Button>
                     </children>
                     <VBox.margin>
-                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="5.0" />
                     </VBox.margin>
                 </HBox>
                 <Separator prefWidth="200.0">
