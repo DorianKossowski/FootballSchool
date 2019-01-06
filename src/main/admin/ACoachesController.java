@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -31,6 +32,8 @@ public class ACoachesController implements Initializable {
     private TextField coachName, coachSurname;
     @FXML
     private Text warningText;
+    @FXML
+    private Button removeButton;
 
     /**
      * supplementary coach class necessary to table creation
@@ -41,7 +44,10 @@ public class ACoachesController implements Initializable {
         private final SimpleStringProperty login = new SimpleStringProperty();
         private final SimpleStringProperty password = new SimpleStringProperty();
 
-        Coach(String name, String surname, String login, String password) {
+        private final int id;
+
+        Coach(String name, String surname, String login, String password, int id) {
+            this.id = id;
             this.name.set(name);
             this.surname.set(surname);
             this.login.set(login);
@@ -62,6 +68,10 @@ public class ACoachesController implements Initializable {
 
         public String getPassword() {
             return password.get();
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -117,7 +127,7 @@ public class ACoachesController implements Initializable {
             ResultSet rs = st.executeQuery("select * from szkolka.uzytkownik where id_tu=2;");
             while(rs.next()) {
                 coachesInDB.add(new Coach(rs.getString("imie"), rs.getString("nazwisko"),
-                        rs.getString("login"), rs.getString("haslo")));
+                        rs.getString("login"), rs.getString("haslo"), rs.getInt("id_u")));
             }
             coachesTable.setItems(coachesInDB);
             setTableHeight();
@@ -145,6 +155,35 @@ public class ACoachesController implements Initializable {
             setCoachesTable();
         } catch (SQLException e) {
             warningText.setVisible(true);
+        }
+    }
+
+    /**
+     * being called after any action on table
+     */
+    @FXML
+    private void rowSelected() {
+        if (coachesTable.getSelectionModel().getSelectedItem() != null) {
+            removeButton.setDisable(false);
+        }
+    }
+
+    /**
+     * being called after on click removeButton
+     * delete selected record from DB
+     */
+    @FXML
+    private void setRemoveButton() {
+        Coach selectedRow = coachesTable.getSelectionModel().getSelectedItem();
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            try (Statement st = conn.createStatement()) {
+                st.execute("delete from szkolka.uzytkownik where id_u=" + selectedRow.getId() + ";");
+                coachesTable.getItems().remove(coachesTable.getSelectionModel().getSelectedItem());
+                removeButton.setDisable(true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

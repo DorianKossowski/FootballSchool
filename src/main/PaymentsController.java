@@ -56,12 +56,10 @@ public class PaymentsController  implements Initializable {
         private final SimpleStringProperty name = new SimpleStringProperty();
         private final SimpleStringProperty month = new SimpleStringProperty();
 
-        private final int nameId;
-        private final int monthId;
+        private final int id;
 
-        Payment(String name, String month, int nameId, int monthId) {
-            this.nameId = nameId;
-            this.monthId = monthId;
+        Payment(String name, String month, int id) {
+            this.id = id;
             this.name.set(name);
             this.month.set(month);
         }
@@ -74,12 +72,8 @@ public class PaymentsController  implements Initializable {
             return month.get();
         }
 
-        public int getNameId() {
-            return nameId;
-        }
-
-        public int getMonthId() {
-            return monthId;
+        public int getId() {
+            return id;
         }
     }
 
@@ -132,12 +126,12 @@ public class PaymentsController  implements Initializable {
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery("select * from szkolka.wplata as w join szkolka.miesiac as m " +
                         "using(id_m) join szkolka.pilkarz as p using(id_p) where w.rok=" + yearBox.getValue() + " and p.id_d=" +
-                        currentTeamId + ";")) {
+                        currentTeamId + " order by id_m;")) {
 
                     ObservableList<Payment> paymentsInDB = FXCollections.observableArrayList();
                     while(rs.next()) {
                         paymentsInDB.add(new Payment(rs.getString("imie") + " " + rs.getString("nazwisko"),
-                                rs.getString("nazwa"), rs.getInt("id_p"), rs.getInt("id_m")));
+                                rs.getString("nazwa"), rs.getInt("id_w")));
                     }
                     paymentsTable.setItems(paymentsInDB);
                     setTableHeight();
@@ -289,7 +283,7 @@ public class PaymentsController  implements Initializable {
      */
     @FXML
     private void rowSelected() {
-        if (paymentsTable.getItems().size() > 0) {
+        if (paymentsTable.getSelectionModel().getSelectedItem() != null) {
             removeButton.setDisable(false);
         }
     }
@@ -304,8 +298,7 @@ public class PaymentsController  implements Initializable {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             try (Statement st = conn.createStatement()) {
-                st.execute("delete from szkolka.wplata where id_p=" + selectedRow.getNameId() +
-                        " and id_m=" + selectedRow.getMonthId() + " and rok=" + yearBox.getValue() + ";");
+                st.execute("delete from szkolka.wplata where id_w=" + selectedRow.getId() + ";");
                 paymentsTable.getItems().remove(paymentsTable.getSelectionModel().getSelectedItem());
                 removeButton.setDisable(true);
             }

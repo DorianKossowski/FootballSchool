@@ -99,5 +99,13 @@
               </TableView>
          </children>
       </VBox>
+      <Button fx:id="removeButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" text="Usuń">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Button>
     </children>
 </VBox>

@@ -7,9 +7,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -21,18 +23,44 @@ import java.util.ResourceBundle;
 public class AMonthsController implements Initializable {
 
     @FXML
-    private TableView<String> monthsTable;
+    private TableView<Month> monthsTable;
     @FXML
-    private TableColumn<String, String> nameCol;
+    private TableColumn<Month, String> nameCol;
     @FXML
     private TextField monthName;
+    @FXML
+    private Button removeButton;
+
+
+    /**
+     * supplementary month class necessary to table creation
+     */
+    public static class Month {
+        private final SimpleStringProperty name = new SimpleStringProperty();
+
+        private final int id;
+
+        public Month(int id, String name) {
+            this.id = id;
+            this.name.set(name);
+        }
+
+        public String getName() {
+            return name.get();
+        }
+
+        public int getId() {
+            return id;
+        }
+
+    }
 
     /**
      * assigns table column and fill table with months from DB
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        nameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         setMonthsTable();
     }
 
@@ -49,14 +77,14 @@ public class AMonthsController implements Initializable {
      */
     private void setMonthsTable() {
         try {
-            Connection conn = DatabaseHandler.getInstance().getConnection();;
+            Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
 
-            ObservableList<String> monthsInDB = FXCollections.observableArrayList();
+            ObservableList<Month> monthsInDB = FXCollections.observableArrayList();
 
-            ResultSet rs = st.executeQuery("select nazwa from szkolka.miesiac;");
+            ResultSet rs = st.executeQuery("select * from szkolka.miesiac;");
             while(rs.next()) {
-                monthsInDB.add(rs.getString("nazwa"));
+                monthsInDB.add(new Month(rs.getInt("id_m"), rs.getString("nazwa")));
             }
             monthsTable.setItems(monthsInDB);
             setTableHeight();
@@ -80,6 +108,35 @@ public class AMonthsController implements Initializable {
             st.close();
             monthName.setText("");
             setMonthsTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * being called after any action on table
+     */
+    @FXML
+    private void rowSelected() {
+        if (monthsTable.getSelectionModel().getSelectedItem() != null) {
+            removeButton.setDisable(false);
+        }
+    }
+
+    /**
+     * being called after on click removeButton
+     * delete selected record from DB
+     */
+    @FXML
+    private void setRemoveButton() {
+        Month selectedRow = monthsTable.getSelectionModel().getSelectedItem();
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            try (Statement st = conn.createStatement()) {
+                st.execute("delete from szkolka.miesiac where id_m=" + selectedRow.getId() + ";");
+                monthsTable.getItems().remove(monthsTable.getSelectionModel().getSelectedItem());
+                removeButton.setDisable(true);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

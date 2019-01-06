@@ -7,10 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
@@ -32,6 +29,8 @@ public class FixturesController {
     private TextField opponentTextField, addressTextField;
     @FXML
     private DatePicker datePic;
+    @FXML
+    private Button removeButton;
 
     private User loggedUser;
     private int currentTeamId;
@@ -44,7 +43,10 @@ public class FixturesController {
         private final SimpleStringProperty opponent = new SimpleStringProperty();
         private final SimpleStringProperty address = new SimpleStringProperty();
 
-        private Match(String date, String opponent, String address) {
+        private final int id;
+
+        private Match(String date, String opponent, String address, int id) {
+            this.id = id;
             this.date.set(date);
             this.opponent.set(opponent);
             this.address.set(address);
@@ -61,6 +63,10 @@ public class FixturesController {
 
         public String getAddress() {
             return address.get();
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -121,7 +127,7 @@ public class FixturesController {
                     currentTeamId + " order by m.data;");
             while(rs.next()) {
                 matchesInDB.add(new Match(rs.getString("data"), rs.getString("przeciwnik"),
-                        rs.getString("adres")));
+                        rs.getString("adres"), rs.getInt("id_m")));
             }
             matchesTable.setItems(matchesInDB);
             setTableHeight();
@@ -154,6 +160,35 @@ public class FixturesController {
             getFixturesFromDB();
         } catch (NullPointerException | SQLException e) {
             warningText.setVisible(true);
+        }
+    }
+
+    /**
+     * being called after any action on table
+     */
+    @FXML
+    private void rowSelected() {
+        if (matchesTable.getSelectionModel().getSelectedItem() != null) {
+            removeButton.setDisable(false);
+        }
+    }
+
+    /**
+     * being called after on click removeButton
+     * delete selected record from DB
+     */
+    @FXML
+    private void setRemoveButton() {
+        Match selectedRow = matchesTable.getSelectionModel().getSelectedItem();
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            try (Statement st = conn.createStatement()) {
+                st.execute("delete from szkolka.mecz where id_m=" + selectedRow.getId() +";");
+                matchesTable.getItems().remove(matchesTable.getSelectionModel().getSelectedItem());
+                removeButton.setDisable(true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

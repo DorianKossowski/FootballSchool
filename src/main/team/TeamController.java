@@ -33,7 +33,7 @@ public class TeamController {
     @FXML
     private TextField newTeamName;
     @FXML
-    private Button createTeamButton, addPlayerButton, parentButton;
+    private Button parentButton, removeButton;
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -52,15 +52,16 @@ public class TeamController {
      * supplementary player class necessary to table creation
      */
     public static class Player {
-        private final SimpleIntegerProperty id_p = new SimpleIntegerProperty();
         private final SimpleStringProperty name = new SimpleStringProperty();
         private final SimpleStringProperty surname = new SimpleStringProperty();
         private final SimpleIntegerProperty year = new SimpleIntegerProperty();
 
+        private final int id_p, id_r;
         private final String phone;
 
-        Player(int id_p, String name, String surname, Integer year, String phone) {
-            this.id_p.set(id_p);
+        Player(int id_p, String name, String surname, Integer year, int id_r, String phone) {
+            this.id_r = id_r;
+            this.id_p = id_p;
             this.name.set(name);
             this.surname.set(surname);
             this.year.set(year);
@@ -68,7 +69,7 @@ public class TeamController {
         }
 
         public int getId_p() {
-            return id_p.get();
+            return id_p;
         }
 
         public String getName() {
@@ -79,12 +80,16 @@ public class TeamController {
             return surname.get();
         }
 
+        public String getPhone() {
+            return this.phone;
+        }
+
         public int getYear() {
             return year.get();
         }
 
-        public String getPhone() {
-            return this.phone;
+        public int getId_r() {
+            return id_r;
         }
     }
 
@@ -123,8 +128,9 @@ public class TeamController {
      */
     @FXML
     private void rowSelected() {
-        if (playersTable.getItems().size() > 0) {
+        if (playersTable.getSelectionModel().getSelectedItem() != null) {
             parentButton.setDisable(false);
+            removeButton.setDisable(false);
         }
     }
 
@@ -239,14 +245,35 @@ public class TeamController {
 
             ObservableList<TeamController.Player> playersInDB = FXCollections.observableArrayList();
 
-            ResultSet rs = st.executeQuery("select * from szkolka.pilkarz where id_d=" + currentTeamId + ";");
+            ResultSet rs = st.executeQuery("select * from szkolka.pilkarz as p join szkolka.uzytkownik as u using(id_u) " +
+                    "where id_d=" + currentTeamId + ";");
             while(rs.next()) {
                 playersInDB.add(new Player(rs.getInt("id_p"), rs.getString("imie"), rs.getString("nazwisko"),
-                        rs.getInt("rocznik"), rs.getString("telefon")));
+                        rs.getInt("rocznik"), rs.getInt("id_u"), rs.getString("telefon")));
             }
             playersTable.setItems(playersInDB);
             setTableHeight();
             st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * being called after on click removeButton
+     * delete selected record from DB
+     */
+    @FXML
+    private void setRemoveButton() {
+        Player selectedRow = playersTable.getSelectionModel().getSelectedItem();
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            try (Statement st = conn.createStatement()) {
+                st.execute("delete from szkolka.pilkarz where id_p=" + selectedRow.getId_p() + ";");
+                st.execute("delete from szkolka.uzytkownik where id_u=" + selectedRow.getId_r() + ";");
+                playersTable.getItems().remove(playersTable.getSelectionModel().getSelectedItem());
+                removeButton.setDisable(true);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

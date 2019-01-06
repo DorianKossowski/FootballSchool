@@ -50,7 +50,7 @@
                 <Font size="24.0" />
             </font>
         </Text>
-        <TableView fx:id="monthsTable" fixedCellSize="30.0" maxWidth="125.0">
+        <TableView fx:id="monthsTable" fixedCellSize="30.0" maxWidth="125.0" onMouseClicked="#rowSelected">
             <placeholder>
                 <Label text="Brak miesięcy w bazie danych" />
             </placeholder>
@@ -70,5 +70,13 @@
                 <Insets />
             </opaqueInsets>
         </TableView>
+      <Button fx:id="removeButton" alignment="CENTER" disable="true" layoutX="144.0" layoutY="151.0" mnemonicParsing="false" onAction="#setRemoveButton" text="Usuń">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Button>
     </children>
 </VBox>

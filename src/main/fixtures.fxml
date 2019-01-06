@@ -74,7 +74,7 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <TableView fx:id="matchesTable" fixedCellSize="30.0" maxWidth="325.0">
+      <TableView fx:id="matchesTable" fixedCellSize="30.0" maxWidth="325.0" onMouseClicked="#rowSelected">
           <placeholder>
               <Label text="Brak meczy w bazie danych" />
           </placeholder>
@@ -90,5 +90,13 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </TableView>
+      <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" prefWidth="75.0" text="Usuń">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Button>
     </children>
 </VBox>
