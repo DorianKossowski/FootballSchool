@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 
@@ -33,7 +34,8 @@ public class PaymentsController  implements Initializable {
     private Text teamName, warningText;
     @FXML
     private Button addButton, removeButton;
-
+    @FXML
+    private VBox wholeArea, addPaymentArea, bottomArea;
     @FXML
     private TableView<Payment> paymentsTable;
     @FXML
@@ -83,21 +85,29 @@ public class PaymentsController  implements Initializable {
      */
     public void userInit(User currentUser) {
         loggedUser = currentUser;
-
-        getTeam();
         initBoxes();
-        setTable();
+
+        if (loggedUser.getUserType() == User.Type.COACH) {
+            getTeam("select d.id_d, d.nazwa from szkolka.druzyna as d " +
+                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + loggedUser.getId() + ";");
+            coachTable();
+        } else {
+            //PARENT
+            getTeam("select d.* from szkolka.pilkarz as p join szkolka.uzytkownik as u using(id_u)" +
+                    " join szkolka.druzyna as d using(id_d) where u.id_u=" + loggedUser.getId() + ";");
+            parentTable();
+            wholeArea.getChildren().remove(addPaymentArea); wholeArea.getChildren().remove(bottomArea);
+        }
     }
 
     /**
      * read from DB correct team
      */
-    private void getTeam() {
+    private void getTeam(String getTeamQuery) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             try (Statement st = conn.createStatement()) {
-                try (ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
-                        "join szkolka.uzytkownik as u using(id_u) where id_u=" + loggedUser.getId() + ";")) {
+                try (ResultSet rs = st.executeQuery(getTeamQuery)) {
                     if (rs.next()) {
                         teamName.setText(rs.getString("nazwa"));
                         currentTeamId = rs.getInt("id_d");
@@ -118,16 +128,31 @@ public class PaymentsController  implements Initializable {
     }
 
     /**
+     * calls setTable method for user of Coach type
+     */
+    private void coachTable() {
+        setTable("select * from szkolka.wplata as w join szkolka.miesiac as m " +
+                "using(id_m) join szkolka.pilkarz as p using(id_p) where w.rok=" + yearBox.getValue() + " and p.id_d=" +
+                currentTeamId + " order by id_m;");
+    }
+
+    /**
+     * calls setTable method for user of Parent type
+     */
+    private void parentTable() {
+        setTable("select * from szkolka.wplata as w join szkolka.miesiac as m " +
+                "using(id_m) join szkolka.pilkarz as p using(id_p) where w.rok=" + yearBox.getValue() + " and p.id_u=" +
+                loggedUser.getId() + ";");
+    }
+
+    /**
      * fills the paymentsTable with values from DB and calls method which set proper table's height
      */
-    private void setTable() {
+    private void setTable(String getPaymentsQuery) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             try (Statement st = conn.createStatement()) {
-                try (ResultSet rs = st.executeQuery("select * from szkolka.wplata as w join szkolka.miesiac as m " +
-                        "using(id_m) join szkolka.pilkarz as p using(id_p) where w.rok=" + yearBox.getValue() + " and p.id_d=" +
-                        currentTeamId + " order by id_m;")) {
-
+                try (ResultSet rs = st.executeQuery(getPaymentsQuery)) {
                     ObservableList<Payment> paymentsInDB = FXCollections.observableArrayList();
                     while(rs.next()) {
                         paymentsInDB.add(new Payment(rs.getString("imie") + " " + rs.getString("nazwisko"),
@@ -173,7 +198,12 @@ public class PaymentsController  implements Initializable {
      */
     @FXML
     private void changeYear() {
-        setTable();
+        if (loggedUser.getUserType() == User.Type.COACH) {
+            coachTable();
+        } else {
+            parentTable();
+        }
+
         if(!removeButton.isDisable()) {
             removeButton.setDisable(true);
         }
@@ -271,7 +301,7 @@ public class PaymentsController  implements Initializable {
                 monthsBox.getSelectionModel().clearSelection();
                 addPaymentFlag1 = addPaymentFlag2 = false;
                 addButton.setDisable(true);
-                setTable();
+                coachTable();
             }
         } catch (SQLException e) {
             e.printStackTrace();

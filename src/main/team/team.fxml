@@ -13,7 +13,7 @@
                 <Font size="24.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="15.0" left="25.0" right="25.0" top="25.0" />
+                <Insets left="25.0" right="25.0" top="25.0" />
             </VBox.margin>
         </Text>
       <VBox fx:id="teamCreationArea" alignment="CENTER">
@@ -37,10 +37,10 @@
               </Button>
          </children>
          <VBox.margin>
-            <Insets />
+            <Insets bottom="15.0" top="15.0" />
          </VBox.margin>
       </VBox>
-      <VBox fx:id="playersArea" alignment="CENTER" visible="false">
+      <VBox fx:id="playersArea" alignment="CENTER">
          <children>
             <VBox fx:id="addPlayerArea" alignment="CENTER">
                <children>
@@ -105,6 +105,9 @@
                   </opaqueInsets>
               </TableView>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </VBox>
       <Button fx:id="removeButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" text="Usuń">
          <font>

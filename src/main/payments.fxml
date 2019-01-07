@@ -8,7 +8,7 @@
 
 <VBox fx:id="wholeArea" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.PaymentsController">
     <children>
-        <VBox alignment="CENTER">
+        <VBox fx:id="addPaymentArea" alignment="CENTER">
             <children>
                 <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj wpłatę:" textAlignment="CENTER">
                     <font>
@@ -66,11 +66,17 @@
                     </VBox.margin>
                 </Separator>
             </children>
+         <VBox.margin>
+            <Insets bottom="-25.0" />
+         </VBox.margin>
         </VBox>
         <Text fx:id="teamName" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa drużyny" textAlignment="CENTER">
             <font>
                 <Font size="24.0" />
             </font>
+         <VBox.margin>
+            <Insets top="25.0" />
+         </VBox.margin>
         </Text>
       <ComboBox fx:id="yearBox" onAction="#changeYear" prefWidth="80.0" promptText="Rok">
          <VBox.margin>
@@ -92,13 +98,25 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </TableView>
-      <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" prefWidth="75.0" text="Usuń">
-         <font>
-            <Font size="14.0" />
-         </font>
+      <VBox fx:id="bottomArea" alignment="CENTER">
+         <children>
+            <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" prefWidth="75.0" text="Usuń">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="reportButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#setRemoveButton" text="Stwórz raport">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
-      </Button>
+      </VBox>
     </children>
 </VBox>
