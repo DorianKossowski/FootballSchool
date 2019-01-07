@@ -37,44 +37,51 @@
               </Button>
          </children>
          <VBox.margin>
-            <Insets bottom="10.0" />
+            <Insets />
          </VBox.margin>
       </VBox>
       <VBox fx:id="playersArea" alignment="CENTER" visible="false">
          <children>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zawodnicy:">
-                  <VBox.margin>
-                      <Insets bottom="10.0" left="10.0" right="10.0" />
-                  </VBox.margin>
-                  <font>
-                      <Font size="24.0" />
-                  </font>
-              </Text>
-            <HBox alignment="CENTER">
+            <VBox fx:id="addPlayerArea" alignment="CENTER">
                <children>
-                  <Button fx:id="addPlayerButton" mnemonicParsing="false" onAction="#addPlayer" text="Dodaj">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="parentButton" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#checkParent" text="Rodzic">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Button>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zawodnicy:">
+                        <VBox.margin>
+                            <Insets bottom="10.0" left="10.0" right="10.0" />
+                        </VBox.margin>
+                        <font>
+                            <Font size="24.0" />
+                        </font>
+                    </Text>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Button fx:id="addPlayerButton" mnemonicParsing="false" onAction="#addPlayer" text="Dodaj">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="parentButton" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#checkParent" text="Rodzic">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Separator>
                </children>
-            </HBox>
-            <Separator prefWidth="200.0">
                <VBox.margin>
-                  <Insets left="10.0" right="10.0" top="10.0" />
+                  <Insets top="10.0" />
                </VBox.margin>
-            </Separator>
+            </VBox>
               <TableView fx:id="playersTable" fixedCellSize="30.0" maxWidth="325.0" onMouseClicked="#rowSelected">
                   <placeholder>
                       <Label text="Brak zawodników w bazie danych" />

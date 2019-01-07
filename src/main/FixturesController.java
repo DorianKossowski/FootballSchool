@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.sql.Connection;
@@ -31,6 +32,8 @@ public class FixturesController {
     private DatePicker datePic;
     @FXML
     private Button removeButton;
+    @FXML
+    private VBox wholeArea, addMatchVBox;
 
     private User loggedUser;
     private int currentTeamId;
@@ -81,11 +84,14 @@ public class FixturesController {
         opponentCol.setCellValueFactory(new PropertyValueFactory<>("opponent"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        getFixturesFromDB();
         if(loggedUser.getUserType() == User.Type.COACH) {
-
+            getFixturesFromDB("select d.id_d, d.nazwa from szkolka.druzyna as d " +
+                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + loggedUser.getId() + ";");
         } else {
-
+            //PARENT
+            wholeArea.getChildren().remove(addMatchVBox); wholeArea.getChildren().remove(removeButton);
+            getFixturesFromDB("select d.* from szkolka.pilkarz as p join szkolka.uzytkownik as u using(id_u)" +
+                    " join szkolka.druzyna as d using(id_d) where u.id_u=" + loggedUser.getId() + ";");
         }
     }
 
@@ -110,15 +116,14 @@ public class FixturesController {
     /**
      * read stored matches in database and fill table
      */
-    private void getFixturesFromDB() {
+    private void getFixturesFromDB(String getTeamQuery) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
 
             ObservableList<Match> matchesInDB = FXCollections.observableArrayList();
 
-            ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
-                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + loggedUser.getId() + ";");
+            ResultSet rs = st.executeQuery(getTeamQuery);
             if(rs.next()) {
                 currentTeamId = rs.getInt("id_d");
                 teamName.setText(rs.getString("nazwa"));
@@ -157,7 +162,8 @@ public class FixturesController {
             opponentTextField.setText("");
             addressTextField.setText("");
             datePic.setValue(null);
-            getFixturesFromDB();
+            getFixturesFromDB("select d.id_d, d.nazwa from szkolka.druzyna as d " +
+                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + loggedUser.getId() + ";");
         } catch (NullPointerException | SQLException e) {
             warningText.setVisible(true);
         }

@@ -29,7 +29,7 @@ public class TeamController {
     @FXML
     private Text mainText;
     @FXML
-    private VBox wholeArea, teamCreationArea, playersArea;
+    private VBox wholeArea, teamCreationArea, playersArea, addPlayerArea;
     @FXML
     private TextField newTeamName;
     @FXML
@@ -96,18 +96,24 @@ public class TeamController {
     public void userInit(User currentUser, BorderPane pane) {
         loggedUser = currentUser;
         borderPane = pane;
+
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
+
         if(loggedUser.getUserType() == User.Type.COACH) {
             if(coachHasTeam(loggedUser.getId())) {
                 wholeArea.getChildren().remove(teamCreationArea);
-
-                nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-                surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
-                yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
                 setPlayersTable();
                 playersArea.setVisible(true);
             }
         } else {
-
+            //PARENT
+            setParentScene("select d.* from szkolka.pilkarz as p join szkolka.uzytkownik as u using(id_u)" +
+                    " join szkolka.druzyna as d using(id_d) where u.id_u=" + loggedUser.getId() + ";");
+            wholeArea.getChildren().remove(teamCreationArea);
+            playersArea.setVisible(true);
+            playersArea.getChildren().remove(addPlayerArea); wholeArea.getChildren().remove(removeButton);
         }
     }
 
@@ -176,6 +182,25 @@ public class TeamController {
         }
         mainText.setText("Stwórz drużynę:");
         return false;
+    }
+
+    /**
+     * sets proper values to texts about upcoming match
+     */
+    private void setParentScene(String getTeamQuery) {
+        try {
+            Connection conn = DatabaseHandler.getInstance().getConnection();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(getTeamQuery);
+            if (rs.next()) {
+                currentTeamId = rs.getInt("id_d");
+                mainText.setText(rs.getString("nazwa"));
+                setPlayersTable();
+                st.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

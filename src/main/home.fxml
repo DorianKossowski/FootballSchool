@@ -42,7 +42,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
               </VBox.margin>
           </Separator>
-          <HBox alignment="CENTER">
+          <HBox fx:id="addHBox" alignment="CENTER">
               <children>
             <TextField fx:id="newMessageField" prefWidth="350.0" promptText="Dodaj wiadomość dla rodziców" />
                   <Button fx:id="addButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addMessage" prefWidth="75.0" text="Dodaj">

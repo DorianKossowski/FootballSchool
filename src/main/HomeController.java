@@ -3,19 +3,19 @@ package main;
 import general.DatabaseHandler;
 import general.User;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class HomeController {
@@ -25,26 +25,41 @@ public class HomeController {
     @FXML
     private TextField newMessageField;
     @FXML
-    private VBox messagesVBox;
+    private VBox messagesVBox, wholeArea;
+    @FXML
+    private HBox addHBox;
+    @FXML
+    private Button addButton;
 
     private User loggedUser;
     private int currentTeamId;
 
     public void userInit(User currentUser) {
         this.loggedUser = currentUser;
-        setNextMatch();
+
+        if (loggedUser.getUserType() == User.Type.COACH) {
+            setNextMatch("select d.id_d, d.nazwa from szkolka.druzyna as d " +
+                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + loggedUser.getId() + ";");
+        } else {
+            //PARENT
+            setNextMatch("select d.* from szkolka.pilkarz as p join szkolka.uzytkownik as u using(id_u)" +
+                    " join szkolka.druzyna as d using(id_d) where u.id_u=" + loggedUser.getId() + ";");
+            addHBox.getChildren().remove(newMessageField); addHBox.getChildren().remove(addButton);
+            Text parentText = new Text("Wiadomości od trenera:");
+            parentText.setStyle("-fx-font: 22 system;");
+            addHBox.getChildren().add(parentText);
+        }
         readMessages();
     }
 
     /**
      * sets proper values to texts about upcoming match
      */
-    private void setNextMatch() {
+    private void setNextMatch(String getTeamQuery) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
-                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + loggedUser.getId() + ";");
+            ResultSet rs = st.executeQuery(getTeamQuery);
             if (rs.next()) {
                 currentTeamId = rs.getInt("id_d");
                 rs = st.executeQuery("select * from szkolka.mecz where id_d=" + currentTeamId +
