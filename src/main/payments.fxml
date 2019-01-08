@@ -108,15 +108,20 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="reportButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#setRemoveButton" text="Stwórz raport">
+            <Button fx:id="reportButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#makeReport" text="Stwórz raport">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
          </children>
          <VBox.margin>
-            <Insets bottom="15.0" />
+            <Insets bottom="5.0" />
          </VBox.margin>
       </VBox>
+      <Text fx:id="reportWarningText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Warning text" visible="false">
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Text>
     </children>
 </VBox>

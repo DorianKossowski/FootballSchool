@@ -15,14 +15,22 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 
 public class PaymentsController  implements Initializable {
 
@@ -31,7 +39,7 @@ public class PaymentsController  implements Initializable {
     @FXML
     private ComboBox<Map.Entry<Integer, String>> playerBox, monthsBox;
     @FXML
-    private Text teamName, warningText;
+    private Text teamName, warningText, reportWarningText;
     @FXML
     private Button addButton, removeButton;
     @FXML
@@ -294,6 +302,7 @@ public class PaymentsController  implements Initializable {
                 }
 
                 //add new record
+                reportWarningText.setVisible(false);
                 st.execute("insert into szkolka.wplata(id_p, id_m, rok, wplacono) values(" +
                         playerBox.getValue().getKey() + "," + monthsBox.getValue().getKey() + "," +
                         yearToAddBox.getValue() + ", true);");
@@ -324,6 +333,7 @@ public class PaymentsController  implements Initializable {
      */
     @FXML
     private void setRemoveButton() {
+        reportWarningText.setVisible(false);
         Payment selectedRow = paymentsTable.getSelectionModel().getSelectedItem();
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
@@ -334,6 +344,103 @@ public class PaymentsController  implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param file absolute path when excel file will be saved
+     * @throws IOException exceptions appear during file saving
+     * creates excel file with summary of payments
+     */
+    private void createXls(String file) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        Sheet spreadsheet = workbook.createSheet("raport");
+
+        //paid cell
+        HSSFCellStyle gStyle = workbook.createCellStyle();
+        gStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        gStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        gStyle.setBorderBottom(BorderStyle.THIN);
+        gStyle.setBorderTop(BorderStyle.THIN);
+        gStyle.setBorderRight(BorderStyle.THIN);
+        gStyle.setBorderLeft(BorderStyle.THIN);
+
+        //unpaid cell
+        HSSFCellStyle rStyle = workbook.createCellStyle();
+        rStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+        rStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        rStyle.setBorderBottom(BorderStyle.THIN);
+        rStyle.setBorderTop(BorderStyle.THIN);
+        rStyle.setBorderRight(BorderStyle.THIN);
+        rStyle.setBorderLeft(BorderStyle.THIN);
+
+        int colCounter=0, rowCounter=0;
+        Row row = spreadsheet.createRow(rowCounter++);
+        spreadsheet.setColumnWidth(colCounter, 5000);
+
+        row.createCell(colCounter++).setCellValue("Piłkarz");
+        for (Map.Entry<Integer, String> month : monthsBox.getItems()) {
+            row.createCell(colCounter++).setCellValue(month.getValue());
+        }
+        row.createCell(colCounter).setCellValue("Suma");
+
+        for (Map.Entry<Integer, String> player : playerBox.getItems()) {
+            row = spreadsheet.createRow(rowCounter++);
+            colCounter = 0;
+            row.createCell(colCounter++).setCellValue(player.getValue());
+            try {
+                Connection conn = DatabaseHandler.getInstance().getConnection();
+                try (Statement st = conn.createStatement()) {
+                    for (Map.Entry<Integer, String> month : monthsBox.getItems()) {
+                        try (ResultSet rs = st.executeQuery("select 1 from szkolka.wplata where id_p=" +
+                                player.getKey() + " and id_m=" + month.getKey() + ";")) {
+                            if (rs.next()) {
+                                row.createCell(colCounter++).setCellStyle(gStyle);
+                            } else {
+                                row.createCell(colCounter++).setCellStyle(rStyle);
+                            }
+                        }
+                    }
+                    try(ResultSet rs = st.executeQuery("select count(*) from szkolka.wplata where id_p=" +
+                            player.getKey() + ";")) {
+                        if (rs.next()) {
+                            row.createCell(colCounter).setCellValue(rs.getInt("count") + "/" +
+                                    monthsBox.getItems().size());
+                        }
+                    }
+                }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
+        FileOutputStream fileOut = new FileOutputStream(file);
+        workbook.write(fileOut);
+        fileOut.close();
+        reportWarningText.setText("Poprawnie zapisano raport");
+        reportWarningText.setVisible(true);
+    }
+
+    /**
+     * being called after on click reportButton
+     * shows save dialog box and calls createXls method
+     */
+    @FXML
+    private void makeReport() {
+        reportWarningText.setVisible(false);
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setTitle("Zapisz raport");
+
+        File file = fileChooser.showSaveDialog(removeButton.getScene().getWindow());
+        if (file != null) {
+            try {
+                createXls(file.getAbsolutePath());
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                reportWarningText.setText("Wystąpił problem podczas tworzenia raportu");
+                reportWarningText.setVisible(true);
+            }
         }
     }
 }
