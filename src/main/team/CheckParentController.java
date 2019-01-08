@@ -45,16 +45,16 @@ public class CheckParentController {
     private void setParent(int id_p) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            ResultSet rs = st.executeQuery("select u.* from szkolka.uzytkownik as u join szkolka.pilkarz as p " +
-                    "using(id_u) where p.id_p = " + id_p + ";");
-            if(rs.next()) {
-                parentName.setText(rs.getString("imie") + " " + rs.getString("nazwisko"));
-                loginText.setText("login: " + rs.getString("login"));
-                passwordText.setText("hasło: " + rs.getString("haslo"));
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery("select u.* from szkolka.uzytkownik as u join szkolka.pilkarz as p " +
+                        "using(id_u) where p.id_p = " + id_p + ";")) {
+                    if (rs.next()) {
+                        parentName.setText(rs.getString("imie") + " " + rs.getString("nazwisko"));
+                        loginText.setText("login: " + rs.getString("login"));
+                        passwordText.setText("hasło: " + rs.getString("haslo"));
+                    }
+                }
             }
-            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

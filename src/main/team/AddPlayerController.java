@@ -130,18 +130,17 @@ public class AddPlayerController {
         int id_u = -1;
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            ResultSet rs = st.executeQuery("insert into szkolka.uzytkownik(imie, nazwisko, id_tu) values('" +
-                    parentName.getText() + "', '" + parentSurname.getText() + "', 3) returning id_u;");
-            if(rs.next()) {
-                id_u = rs.getInt("id_u");
-                st.execute("insert into szkolka.pilkarz(id_u, id_d, imie, nazwisko, rocznik, telefon) values(" + id_u +
-                ", " + teamId + ", '" + playerName.getText() + "', '" + playerSurname.getText() + "', " + yearBox.getValue() +
-                        ", " + parentPhone.getText() + ");");
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery("insert into szkolka.uzytkownik(imie, nazwisko, id_tu) values('" +
+                        parentName.getText() + "', '" + parentSurname.getText() + "', 3) returning id_u;")) {
+                    if (rs.next()) {
+                        id_u = rs.getInt("id_u");
+                        st.execute("insert into szkolka.pilkarz(id_u, id_d, imie, nazwisko, rocznik, telefon) values(" + id_u +
+                                ", " + teamId + ", '" + playerName.getText() + "', '" + playerSurname.getText() + "', " + yearBox.getValue() +
+                                ", " + parentPhone.getText() + ");");
+                    }
+                }
             }
-            st.close();
-
             playerName.setText(""); playerSurname.setText("");
             parentName.setText(""); parentSurname.setText(""); parentPhone.setText("");
             yearBox.setValue(null);
@@ -155,9 +154,9 @@ public class AddPlayerController {
             if(id_u != -1) {
                 try {
                     Connection conn = DatabaseHandler.getInstance().getConnection();
-                    Statement st = conn.createStatement();
-                    st.execute("delete from szkolka.uzytkownik where id_u=" + id_u + ";");
-                    st.close();
+                    try (Statement st = conn.createStatement()) {
+                        st.execute("delete from szkolka.uzytkownik where id_u=" + id_u + ";");
+                    }
                 } catch (SQLException exc) {
                     e.printStackTrace();
                 }

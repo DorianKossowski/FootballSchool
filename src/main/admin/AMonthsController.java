@@ -78,17 +78,16 @@ public class AMonthsController implements Initializable {
     private void setMonthsTable() {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            ObservableList<Month> monthsInDB = FXCollections.observableArrayList();
-
-            ResultSet rs = st.executeQuery("select * from szkolka.miesiac;");
-            while(rs.next()) {
-                monthsInDB.add(new Month(rs.getInt("id_m"), rs.getString("nazwa")));
+            try (Statement st = conn.createStatement()) {
+                ObservableList<Month> monthsInDB = FXCollections.observableArrayList();
+                try (ResultSet rs = st.executeQuery("select * from szkolka.miesiac;")) {
+                    while (rs.next()) {
+                        monthsInDB.add(new Month(rs.getInt("id_m"), rs.getString("nazwa")));
+                    }
+                    monthsTable.setItems(monthsInDB);
+                    setTableHeight();
+                }
             }
-            monthsTable.setItems(monthsInDB);
-            setTableHeight();
-            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,12 +101,12 @@ public class AMonthsController implements Initializable {
     private void addNewMonth() {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            st.execute("insert into szkolka.miesiac(nazwa) values('" + monthName.getText() + "');");
-            st.close();
-            monthName.setText("");
-            setMonthsTable();
+            try (Statement st = conn.createStatement()) {
+                st.execute("insert into szkolka.miesiac(nazwa) values('" + monthName.getText() + "');");
+                st.close();
+                monthName.setText("");
+                setMonthsTable();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

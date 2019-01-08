@@ -40,7 +40,7 @@
             <Insets bottom="15.0" top="15.0" />
          </VBox.margin>
       </VBox>
-      <VBox fx:id="playersArea" alignment="CENTER">
+      <VBox fx:id="playersArea" alignment="CENTER" visible="false">
          <children>
             <VBox fx:id="addPlayerArea" alignment="CENTER">
                <children>
@@ -104,18 +104,18 @@
                       <Insets />
                   </opaqueInsets>
               </TableView>
+            <Button fx:id="removeButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" text="Usuń">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </Button>
          </children>
          <VBox.margin>
             <Insets />
          </VBox.margin>
       </VBox>
-      <Button fx:id="removeButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#setRemoveButton" text="Usuń">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="15.0" />
-         </VBox.margin>
-      </Button>
     </children>
 </VBox>

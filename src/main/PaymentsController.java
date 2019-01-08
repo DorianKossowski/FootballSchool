@@ -402,7 +402,7 @@ public class PaymentsController  implements Initializable {
                         }
                     }
                     try(ResultSet rs = st.executeQuery("select count(*) from szkolka.wplata where id_p=" +
-                            player.getKey() + ";")) {
+                            player.getKey() + " and rok=" + yearBox.getValue() + ";")) {
                         if (rs.next()) {
                             row.createCell(colCounter).setCellValue(rs.getInt("count") + "/" +
                                     monthsBox.getItems().size());

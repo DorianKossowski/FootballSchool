@@ -58,22 +58,24 @@ public class HomeController {
     private void setNextMatch(String getTeamQuery) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(getTeamQuery);
-            if (rs.next()) {
-                currentTeamId = rs.getInt("id_d");
-                rs = st.executeQuery("select * from szkolka.mecz where id_d=" + currentTeamId +
-                        " and data>=current_date order by data;");
-                if (rs.next()) {
-                    opponentText.setText(rs.getString("przeciwnik"));
-                    addressText.setText(rs.getString("adres"));
-                    dateText.setText(rs.getString("data"));
-                } else {
-                    opponentText.setText("Brak nadchodzących meczy");
-                    addressText.setVisible(false);
-                    dateText.setVisible(false);
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery(getTeamQuery)) {
+                    if (rs.next()) {
+                        currentTeamId = rs.getInt("id_d");
+                        try (ResultSet rs2 = st.executeQuery("select * from szkolka.mecz where id_d=" + currentTeamId +
+                                " and data>=current_date order by data;")) {
+                            if (rs2.next()) {
+                                opponentText.setText(rs2.getString("przeciwnik"));
+                                addressText.setText(rs2.getString("adres"));
+                                dateText.setText(rs2.getString("data"));
+                            } else {
+                                opponentText.setText("Brak nadchodzących meczy");
+                                addressText.setVisible(false);
+                                dateText.setVisible(false);
+                            }
+                        }
+                    }
                 }
-                st.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,11 +94,10 @@ public class HomeController {
         }
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            st.execute("insert into szkolka.wiadomosc(id_d, data, tresc) values(" + currentTeamId +
-                    ", current_date, '" + newMessageField.getText() + "');");
-            st.close();
-
+            try (Statement st = conn.createStatement()) {
+                st.execute("insert into szkolka.wiadomosc(id_d, data, tresc) values(" + currentTeamId +
+                        ", current_date, '" + newMessageField.getText() + "');");
+            }
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             TextArea msg = new TextArea(dateFormat.format(date) + "\n" + newMessageField.getText());
@@ -117,17 +118,18 @@ public class HomeController {
     private void readMessages() {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs =  st.executeQuery("select * from szkolka.wiadomosc where id_d=" + currentTeamId +
-                    "order by id_w desc;");
-            while (rs.next()) {
-                TextArea msg = new TextArea(rs.getString("data") + "\n" + rs.getString("tresc"));
-                msg.setMaxWidth(450);
-                msg.setPrefRowCount(2);
-                msg.setEditable(false);
-                messagesVBox.getChildren().add(msg);
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery("select * from szkolka.wiadomosc where id_d=" + currentTeamId +
+                        "order by id_w desc;")) {
+                    while (rs.next()) {
+                        TextArea msg = new TextArea(rs.getString("data") + "\n" + rs.getString("tresc"));
+                        msg.setMaxWidth(450);
+                        msg.setPrefRowCount(2);
+                        msg.setEditable(false);
+                        messagesVBox.getChildren().add(msg);
+                    }
+                }
             }
-            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

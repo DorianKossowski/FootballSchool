@@ -79,22 +79,22 @@ public class ChangePassController {
         try {
             warningText.setVisible(true);
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select 1 from szkolka.uzytkownik where login='" + currentLogin + "' " +
-                    "and haslo='" + oldPassword.getText() + "';");
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery("select 1 from szkolka.uzytkownik where login='" + currentLogin + "' " +
+                        "and haslo='" + oldPassword.getText() + "';")) {
 
-            if(rs.next() && changeValidation()) {
-                st.execute("update szkolka.uzytkownik set haslo='" + newPassword.getText() + "' where login='" +
-                        currentLogin + "';");
-                st.close();
-                oldPassword.setText("");
-                newPassword.setText("");
-                newPassword2.setText("");
-                warningText.setText("Poprawnie zmieniono hasło");
-                warningText.setVisible(true);
-            }
-            else {
-                warningText.setText("Podano złe wartości");
+                    if (rs.next() && changeValidation()) {
+                        st.execute("update szkolka.uzytkownik set haslo='" + newPassword.getText() + "' where login='" +
+                                currentLogin + "';");
+                        oldPassword.setText("");
+                        newPassword.setText("");
+                        newPassword2.setText("");
+                        warningText.setText("Poprawnie zmieniono hasło");
+                        warningText.setVisible(true);
+                    } else {
+                        warningText.setText("Podano złe wartości");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -250,12 +250,13 @@ public class MainController implements Initializable {
     private boolean coachHasTeam(int coachId) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
-                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + coachId + ";");
-            if(rs.next()) {
-                st.close();
-                return true;
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
+                        "join szkolka.uzytkownik as u using(id_u) where id_u=" + coachId + ";")) {
+                    if (rs.next()) {
+                        return true;
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

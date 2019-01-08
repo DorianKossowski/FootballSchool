@@ -87,14 +87,15 @@ public class LoginController {
     private boolean userValidation(String login, String password) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from szkolka.uzytkownik where login='" + login + "' and " +
-                    "haslo='" + password + "';");
-            if(rs.next()) {
-                currentUser = new User(rs.getString("imie"), rs.getString("nazwisko"),
-                        rs.getInt("id_tu"), login, rs.getInt("id_u"));
-                st.close();
-                return true;
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery("select * from szkolka.uzytkownik where login='" + login + "' and " +
+                        "haslo='" + password + "';")) {
+                    if (rs.next()) {
+                        currentUser = new User(rs.getString("imie"), rs.getString("nazwisko"),
+                                rs.getInt("id_tu"), login, rs.getInt("id_u"));
+                        return true;
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

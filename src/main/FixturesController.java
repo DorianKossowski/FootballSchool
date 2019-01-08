@@ -119,24 +119,24 @@ public class FixturesController {
     private void getFixturesFromDB(String getTeamQuery) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            ObservableList<Match> matchesInDB = FXCollections.observableArrayList();
-
-            ResultSet rs = st.executeQuery(getTeamQuery);
-            if(rs.next()) {
-                currentTeamId = rs.getInt("id_d");
-                teamName.setText(rs.getString("nazwa"));
+            try (Statement st = conn.createStatement()) {
+                ObservableList<Match> matchesInDB = FXCollections.observableArrayList();
+                try (ResultSet rs = st.executeQuery(getTeamQuery)) {
+                    if (rs.next()) {
+                        currentTeamId = rs.getInt("id_d");
+                        teamName.setText(rs.getString("nazwa"));
+                        try (ResultSet rs2 = st.executeQuery("select m.* from szkolka.druzyna d join szkolka.mecz m using(id_d) where id_d=" +
+                                currentTeamId + " order by m.data;")) {
+                            while (rs2.next()) {
+                                matchesInDB.add(new Match(rs2.getString("data"), rs2.getString("przeciwnik"),
+                                        rs2.getString("adres"), rs2.getInt("id_m")));
+                            }
+                            matchesTable.setItems(matchesInDB);
+                            setTableHeight();
+                        }
+                    }
+                }
             }
-            rs = st.executeQuery("select m.* from szkolka.druzyna d join szkolka.mecz m using(id_d) where id_d=" +
-                    currentTeamId + " order by m.data;");
-            while(rs.next()) {
-                matchesInDB.add(new Match(rs.getString("data"), rs.getString("przeciwnik"),
-                        rs.getString("adres"), rs.getInt("id_m")));
-            }
-            matchesTable.setItems(matchesInDB);
-            setTableHeight();
-            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -152,13 +152,12 @@ public class FixturesController {
                 throw new NullPointerException();
             }
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            String chosenDate = datePic.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE);
-            st.execute("insert into szkolka.mecz(id_d, data, przeciwnik, adres) values(" +
-                    currentTeamId + ", '" + chosenDate + "', '" + opponentTextField.getText() +
-                    "', '" + addressTextField.getText() + "');");
-            st.close();
+            try (Statement st = conn.createStatement()) {
+                String chosenDate = datePic.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE);
+                st.execute("insert into szkolka.mecz(id_d, data, przeciwnik, adres) values(" +
+                        currentTeamId + ", '" + chosenDate + "', '" + opponentTextField.getText() +
+                        "', '" + addressTextField.getText() + "');");
+            }
             opponentTextField.setText("");
             addressTextField.setText("");
             datePic.setValue(null);

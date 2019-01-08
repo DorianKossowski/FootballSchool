@@ -113,7 +113,7 @@ public class TeamController {
                     " join szkolka.druzyna as d using(id_d) where u.id_u=" + loggedUser.getId() + ";");
             wholeArea.getChildren().remove(teamCreationArea);
             playersArea.setVisible(true);
-            playersArea.getChildren().remove(addPlayerArea); wholeArea.getChildren().remove(removeButton);
+            playersArea.getChildren().remove(addPlayerArea); playersArea.getChildren().remove(removeButton);
         }
     }
 
@@ -168,14 +168,15 @@ public class TeamController {
     private boolean coachHasTeam(int coachId) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
-                    "join szkolka.uzytkownik as u using(id_u) where id_u=" + coachId + ";");
-            if(rs.next()) {
-                mainText.setText(rs.getString("nazwa"));
-                currentTeamId = rs.getInt("id_d");
-                st.close();
-                return true;
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery("select d.id_d, d.nazwa from szkolka.druzyna as d " +
+                        "join szkolka.uzytkownik as u using(id_u) where id_u=" + coachId + ";")) {
+                    if (rs.next()) {
+                        mainText.setText(rs.getString("nazwa"));
+                        currentTeamId = rs.getInt("id_d");
+                        return true;
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,13 +191,14 @@ public class TeamController {
     private void setParentScene(String getTeamQuery) {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(getTeamQuery);
-            if (rs.next()) {
-                currentTeamId = rs.getInt("id_d");
-                mainText.setText(rs.getString("nazwa"));
-                setPlayersTable();
-                st.close();
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery(getTeamQuery)) {
+                    if (rs.next()) {
+                        currentTeamId = rs.getInt("id_d");
+                        mainText.setText(rs.getString("nazwa"));
+                        setPlayersTable();
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -213,17 +215,17 @@ public class TeamController {
         {
             try {
                 Connection conn = DatabaseHandler.getInstance().getConnection();
-                Statement st = conn.createStatement();
-                st.execute("insert into szkolka.druzyna(id_u, nazwa) values(" + loggedUser.getId() +
-                        ", '" + newTeamName.getText() + "');");
-                st.close();
+                try (Statement st = conn.createStatement()) {
+                    st.execute("insert into szkolka.druzyna(id_u, nazwa) values(" + loggedUser.getId() +
+                            ", '" + newTeamName.getText() + "');");
 
-                wholeArea.getChildren().remove(teamCreationArea);
-                playersArea.setVisible(true);
-                coachHasTeam(loggedUser.getId());
-                homeButton.setDisable(false);
-                fixturesButton.setDisable(false);
-                paymentsButton.setDisable(false);
+                    wholeArea.getChildren().remove(teamCreationArea);
+                    playersArea.setVisible(true);
+                    coachHasTeam(loggedUser.getId());
+                    homeButton.setDisable(false);
+                    fixturesButton.setDisable(false);
+                    paymentsButton.setDisable(false);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -266,19 +268,18 @@ public class TeamController {
     private void setPlayersTable() {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            ObservableList<TeamController.Player> playersInDB = FXCollections.observableArrayList();
-
-            ResultSet rs = st.executeQuery("select * from szkolka.pilkarz as p join szkolka.uzytkownik as u using(id_u) " +
-                    "where id_d=" + currentTeamId + ";");
-            while(rs.next()) {
-                playersInDB.add(new Player(rs.getInt("id_p"), rs.getString("imie"), rs.getString("nazwisko"),
-                        rs.getInt("rocznik"), rs.getInt("id_u"), rs.getString("telefon")));
+            try (Statement st = conn.createStatement()) {
+                ObservableList<TeamController.Player> playersInDB = FXCollections.observableArrayList();
+                try (ResultSet rs = st.executeQuery("select * from szkolka.pilkarz as p join szkolka.uzytkownik as u using(id_u) " +
+                        "where id_d=" + currentTeamId + ";")) {
+                    while (rs.next()) {
+                        playersInDB.add(new Player(rs.getInt("id_p"), rs.getString("imie"), rs.getString("nazwisko"),
+                                rs.getInt("rocznik"), rs.getInt("id_u"), rs.getString("telefon")));
+                    }
+                }
+                playersTable.setItems(playersInDB);
+                setTableHeight();
             }
-            playersTable.setItems(playersInDB);
-            setTableHeight();
-            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

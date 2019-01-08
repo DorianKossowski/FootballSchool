@@ -120,18 +120,17 @@ public class ACoachesController implements Initializable {
     private void setCoachesTable() {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();;
-            Statement st = conn.createStatement();
-
-            ObservableList<Coach> coachesInDB = FXCollections.observableArrayList();
-
-            ResultSet rs = st.executeQuery("select * from szkolka.uzytkownik where id_tu=2;");
-            while(rs.next()) {
-                coachesInDB.add(new Coach(rs.getString("imie"), rs.getString("nazwisko"),
-                        rs.getString("login"), rs.getString("haslo"), rs.getInt("id_u")));
+            try (Statement st = conn.createStatement()) {
+                ObservableList<Coach> coachesInDB = FXCollections.observableArrayList();
+                try (ResultSet rs = st.executeQuery("select * from szkolka.uzytkownik where id_tu=2;")) {
+                    while (rs.next()) {
+                        coachesInDB.add(new Coach(rs.getString("imie"), rs.getString("nazwisko"),
+                                rs.getString("login"), rs.getString("haslo"), rs.getInt("id_u")));
+                    }
+                    coachesTable.setItems(coachesInDB);
+                    setTableHeight();
+                }
             }
-            coachesTable.setItems(coachesInDB);
-            setTableHeight();
-            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -145,14 +144,14 @@ public class ACoachesController implements Initializable {
     private void addNewCoach() {
         try {
             Connection conn = DatabaseHandler.getInstance().getConnection();
-            Statement st = conn.createStatement();
-
-            st.execute("insert into szkolka.uzytkownik(imie, nazwisko, id_tu) values('" +
-                    coachName.getText() + "', '" + coachSurname.getText() + "', 2);");
-            st.close();
-            coachName.setText("");
-            coachSurname.setText("");
-            setCoachesTable();
+            try (Statement st = conn.createStatement()) {
+                st.execute("insert into szkolka.uzytkownik(imie, nazwisko, id_tu) values('" +
+                        coachName.getText() + "', '" + coachSurname.getText() + "', 2);");
+                st.close();
+                coachName.setText("");
+                coachSurname.setText("");
+                setCoachesTable();
+            }
         } catch (SQLException e) {
             warningText.setVisible(true);
         }
