@@ -393,7 +393,7 @@ public class PaymentsController  implements Initializable {
                 try (Statement st = conn.createStatement()) {
                     for (Map.Entry<Integer, String> month : monthsBox.getItems()) {
                         try (ResultSet rs = st.executeQuery("select 1 from szkolka.wplata where id_p=" +
-                                player.getKey() + " and id_m=" + month.getKey() + ";")) {
+                                player.getKey() + " and id_m=" + month.getKey() + " and rok=" + yearBox.getValue() + ";")) {
                             if (rs.next()) {
                                 row.createCell(colCounter++).setCellStyle(gStyle);
                             } else {
@@ -431,6 +431,7 @@ public class PaymentsController  implements Initializable {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel (*.xls)", "*.xls");
         fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.setTitle("Zapisz raport");
+        fileChooser.setInitialFileName("Raport - " + teamName.getText() + " " + yearBox.getValue());
 
         File file = fileChooser.showSaveDialog(removeButton.getScene().getWindow());
         if (file != null) {
