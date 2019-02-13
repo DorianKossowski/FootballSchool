@@ -1,7 +1,7 @@
-package main;
+package main.java.controllers;
 
-import general.DatabaseHandler;
-import general.User;
+import main.java.general.DatabaseHandler;
+import main.java.general.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;

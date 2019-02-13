@@ -1,4 +1,4 @@
-package general;
+package main.java.general;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;

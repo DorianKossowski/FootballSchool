@@ -1,7 +1,7 @@
-package main.team;
+package main.java.controllers;
 
-import general.DatabaseHandler;
-import general.User;
+import main.java.general.DatabaseHandler;
+import main.java.general.User;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -150,7 +150,7 @@ public class TeamController {
 
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("checkParent.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/checkParent.fxml"));
             root = loader.load();
             CheckParentController cpController = loader.getController();
             cpController.init(borderPane, loggedUser ,selectedPlayer);
@@ -243,7 +243,7 @@ public class TeamController {
     private void addPlayer() {
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("addPlayer.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/addPlayer.fxml"));
             root = loader.load();
             AddPlayerController apController = loader.getController();
             apController.init(borderPane, currentTeamId, loggedUser);

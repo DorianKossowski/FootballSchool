@@ -1,7 +1,7 @@
-package main.team;
+package main.java.controllers;
 
-import general.DatabaseHandler;
-import general.User;
+import main.java.general.DatabaseHandler;
+import main.java.general.User;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -106,7 +106,7 @@ public class AddPlayerController {
     private void backToPreviousScene() {
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("team.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
             tController.userInit(loggedUser, borderPane);

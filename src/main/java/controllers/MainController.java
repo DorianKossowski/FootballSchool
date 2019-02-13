@@ -1,7 +1,7 @@
-package main;
+package main.java.controllers;
 
-import general.DatabaseHandler;
-import general.User;
+import main.java.general.DatabaseHandler;
+import main.java.general.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +15,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import login.LoginController;
-import main.admin.ACoachesController;
-import main.team.TeamController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -103,7 +100,7 @@ public class MainController implements Initializable {
         setSelectedFont(coachesButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminCoaches.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/adminCoaches.fxml"));
             root = loader.load();
             ACoachesController aController = loader.getController();
             aController.setListeners();
@@ -122,7 +119,7 @@ public class MainController implements Initializable {
         setSelectedFont(monthsButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("admin/adminMonths.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/adminMonths.fxml"));
             root = loader.load();
             adminMenuBar();
         } catch (IOException e) {
@@ -139,7 +136,7 @@ public class MainController implements Initializable {
         setSelectedFont(changePassButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("changePassword.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/changePassword.fxml"));
             root = loader.load();
             ChangePassController cpController = loader.getController();
             cpController.userInit(currentUser);
@@ -159,7 +156,7 @@ public class MainController implements Initializable {
         setSelectedFont(teamButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("team/team.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
             if(currentUser.getUserType() == User.Type.COACH) {
@@ -180,7 +177,7 @@ public class MainController implements Initializable {
         setSelectedFont(fixturesButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fixtures.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/fixtures.fxml"));
             root = loader.load();
             FixturesController fController = loader.getController();
             fController.userInit(currentUser);
@@ -198,7 +195,7 @@ public class MainController implements Initializable {
         setSelectedFont(paymentsButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("payments.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/payments.fxml"));
             root = loader.load();
             PaymentsController pController = loader.getController();
             pController.userInit(currentUser);
@@ -216,7 +213,7 @@ public class MainController implements Initializable {
         setSelectedFont(homeButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/home.fxml"));
             root = loader.load();
             HomeController hController = loader.getController();
             hController.userInit(currentUser);
@@ -232,7 +229,7 @@ public class MainController implements Initializable {
      */
     private void userLogout(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../login/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/login.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);

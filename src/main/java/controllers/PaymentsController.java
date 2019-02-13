@@ -1,7 +1,7 @@
-package main;
+package main.java.controllers;
 
-import general.DatabaseHandler;
-import general.User;
+import main.java.general.DatabaseHandler;
+import main.java.general.User;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

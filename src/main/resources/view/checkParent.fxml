@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="wholeArea" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.team.CheckParentController">
+<VBox fx:id="wholeArea" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controllers.CheckParentController">
     <children>
         <Text fx:id="playerName" layoutX="194.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imie nazwisko piłkarza">
             <font>

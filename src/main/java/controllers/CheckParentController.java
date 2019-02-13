@@ -1,7 +1,7 @@
-package main.team;
+package main.java.controllers;
 
-import general.DatabaseHandler;
-import general.User;
+import main.java.general.DatabaseHandler;
+import main.java.general.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -68,7 +68,7 @@ public class CheckParentController {
     private void backToPreviousScene() {
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("team.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
             tController.userInit(loggedUser, borderPane);

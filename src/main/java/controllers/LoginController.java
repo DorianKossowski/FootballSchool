@@ -1,4 +1,4 @@
-package login;
+package main.java.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,9 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import general.DatabaseHandler;
-import main.MainController;
-import general.User;
+import main.java.general.DatabaseHandler;
+import main.java.general.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -64,7 +63,7 @@ public class LoginController {
         if(userValidation(login.getText(), password.getText())) {
             try {
                 MainController controller = new MainController(currentUser);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../main/main.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/main.fxml"));
                 loader.setController(controller);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 Scene scene = new Scene(loader.load());
