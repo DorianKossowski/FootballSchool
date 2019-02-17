@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #2D3447;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controllers.LoginController">
@@ -19,7 +21,15 @@
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="900.0">
          <children>
             <Region prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <TextField fx:id="login" promptText="login">
+            <ImageView fitHeight="35.0" fitWidth="35.0">
+               <image>
+                  <Image url="@../images/loginSymbol.png" />
+               </image>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <TextField fx:id="login" onKeyPressed="#setErrorInvisible" promptText="login">
                <font>
                   <Font size="18.0" />
                </font>
@@ -30,7 +40,15 @@
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <PasswordField fx:id="password" promptText="hasło">
+            <ImageView fitHeight="35.0" fitWidth="35.0">
+               <image>
+                  <Image url="@../images/passSymbol.png" />
+               </image>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <PasswordField fx:id="password" onKeyPressed="#setErrorInvisible" promptText="hasło">
                <font>
                   <Font size="18.0" />
                </font>

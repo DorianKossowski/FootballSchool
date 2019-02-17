@@ -41,19 +41,17 @@ public class LoginController {
                 loginButton.fire();
             }
         });
-
-        login.textProperty().addListener( observable -> {
-            if(userValidError.isVisible()) {
-                userValidError.setVisible(false);
-            }
-        });
-        password.textProperty().addListener( observable -> {
-            if(userValidError.isVisible()) {
-                userValidError.setVisible(false);
-            }
-        });
     }
 
+    /**
+     * disable error text after changing value of textfield
+     */
+    @FXML
+    private void setErrorInvisible() {
+        if(userValidError.isVisible()) {
+            userValidError.setVisible(false);
+        }
+    }
     /**
      * @param event connected with LOGIN button
      * after correct user validation, changes to main scene

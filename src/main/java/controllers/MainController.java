@@ -40,7 +40,7 @@ public class MainController implements Initializable {
     /**
      * @param u currently logged user
      */
-    public MainController(User u) {
+    MainController(User u) {
         currentUser = u;
     }
 
