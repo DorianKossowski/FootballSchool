@@ -100,7 +100,7 @@ public class MainController implements Initializable {
         setSelectedFont(coachesButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/adminCoaches.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminCoaches.fxml"));
             root = loader.load();
             ACoachesController aController = loader.getController();
             aController.setListeners();
@@ -119,7 +119,7 @@ public class MainController implements Initializable {
         setSelectedFont(monthsButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/adminMonths.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminMonths.fxml"));
             root = loader.load();
             adminMenuBar();
         } catch (IOException e) {
@@ -136,7 +136,7 @@ public class MainController implements Initializable {
         setSelectedFont(changePassButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/changePassword.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/changePassword.fxml"));
             root = loader.load();
             ChangePassController cpController = loader.getController();
             cpController.userInit(currentUser);
@@ -156,7 +156,7 @@ public class MainController implements Initializable {
         setSelectedFont(teamButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/team.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
             if(currentUser.getUserType() == User.Type.COACH) {
@@ -177,7 +177,7 @@ public class MainController implements Initializable {
         setSelectedFont(fixturesButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/fixtures.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fixtures.fxml"));
             root = loader.load();
             FixturesController fController = loader.getController();
             fController.userInit(currentUser);
@@ -195,7 +195,7 @@ public class MainController implements Initializable {
         setSelectedFont(paymentsButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/payments.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/payments.fxml"));
             root = loader.load();
             PaymentsController pController = loader.getController();
             pController.userInit(currentUser);
@@ -213,7 +213,7 @@ public class MainController implements Initializable {
         setSelectedFont(homeButton);
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/home.fxml"));
             root = loader.load();
             HomeController hController = loader.getController();
             hController.userInit(currentUser);
@@ -229,9 +229,10 @@ public class MainController implements Initializable {
      */
     private void userLogout(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/login.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(loader.load());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
+            Scene currentScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) currentScene.getWindow();
+            Scene scene = new Scene(loader.load(), currentScene.getWidth(), currentScene.getHeight());
             stage.setScene(scene);
             LoginController lcontroller = loader.getController();
             lcontroller.setListeners(scene);

@@ -11,13 +11,25 @@ public class User {
     }
 
     /**
+     * Creates and stores User instance
+     */
+    private static class UserHolder {
+        private static final User INSTANCE = new User();
+    }
+
+    /**
+     * Private constructor prevents creating instances from outside the class
+     */
+    private User() {}
+
+    /**
      * @param n name of logged user
      * @param s surname of logged user
      * @param type type of logged user (admin, coach, parent)
      * @param l login of logged user
      * @param i id of logged user
      */
-    public User(String n, String s, int type, String l, int i) {
+    public void init(String n, String s, int type, String l, int i) {
         name = n;
         surname = s;
         login = l;
@@ -36,7 +48,12 @@ public class User {
         }
 
     }
-
+    /**
+     * @return class instance
+     */
+    public static User getInstance() {
+        return UserHolder.INSTANCE;
+    }
     /**
      * @return name of logged user
      */

@@ -15,7 +15,7 @@ public class AppPreloader extends Preloader{
     public void start(Stage primaryStage) throws Exception {
         this.preloaderStage = primaryStage;
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/preloader.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/preloader.fxml"));
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);

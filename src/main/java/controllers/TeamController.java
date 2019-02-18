@@ -150,7 +150,7 @@ public class TeamController {
 
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/checkParent.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/checkParent.fxml"));
             root = loader.load();
             CheckParentController cpController = loader.getController();
             cpController.init(borderPane, loggedUser ,selectedPlayer);
@@ -243,7 +243,7 @@ public class TeamController {
     private void addPlayer() {
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/addPlayer.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addPlayer.fxml"));
             root = loader.load();
             AddPlayerController apController = loader.getController();
             apController.init(borderPane, currentTeamId, loggedUser);

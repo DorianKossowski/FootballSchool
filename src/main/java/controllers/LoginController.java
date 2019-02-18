@@ -61,10 +61,11 @@ public class LoginController {
         if(userValidation(login.getText(), password.getText())) {
             try {
                 MainController controller = new MainController(currentUser);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/main.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main.fxml"));
                 loader.setController(controller);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Scene scene = new Scene(loader.load());
+                Scene currentScene = ((Node) event.getSource()).getScene();
+                Stage stage = (Stage) currentScene.getWindow();
+                Scene scene = new Scene(loader.load(), currentScene.getWidth(), currentScene.getHeight());
                 stage.setScene(scene);
             } catch (IOException io) {
                 io.printStackTrace();
@@ -88,7 +89,8 @@ public class LoginController {
                 try (ResultSet rs = st.executeQuery("select * from szkolka.uzytkownik where login='" + login + "' and " +
                         "haslo='" + password + "';")) {
                     if (rs.next()) {
-                        currentUser = new User(rs.getString("imie"), rs.getString("nazwisko"),
+                        currentUser = User.getInstance();
+                        currentUser.init(rs.getString("imie"), rs.getString("nazwisko"),
                                 rs.getInt("id_tu"), login, rs.getInt("id_u"));
                         return true;
                     }

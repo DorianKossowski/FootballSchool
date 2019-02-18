@@ -106,7 +106,7 @@ public class AddPlayerController {
     private void backToPreviousScene() {
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/team.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/team.fxml"));
             root = loader.load();
             TeamController tController = loader.getController();
             tController.userInit(loggedUser, borderPane);

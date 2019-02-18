@@ -10,6 +10,9 @@
       <entry name="!?*.flex" />
       <entry name="!?*.kt" />
       <entry name="!?*.clj" />
+      <entry name="?*.fxml" />
+      <entry name="?*.css" />
+      <entry name="?*.txt" />
     </wildcardResourcePatterns>
   </component>
   <component name="JavacSettings">
