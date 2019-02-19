@@ -41,6 +41,9 @@ public class LoginController {
                 loginButton.fire();
             }
         });
+
+        login.textProperty().addListener( observable -> setErrorInvisible());
+        password.textProperty().addListener( observable -> setErrorInvisible());
     }
 
     /**

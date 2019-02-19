@@ -29,7 +29,7 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </ImageView>
-            <TextField fx:id="login" onKeyPressed="#setErrorInvisible" promptText="login">
+            <TextField fx:id="login" promptText="login">
                <font>
                   <Font size="18.0" />
                </font>
@@ -48,7 +48,7 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </ImageView>
-            <PasswordField fx:id="password" onKeyPressed="#setErrorInvisible" promptText="hasło">
+            <PasswordField fx:id="password" promptText="hasło">
                <font>
                   <Font size="18.0" />
                </font>
