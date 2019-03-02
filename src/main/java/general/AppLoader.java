@@ -28,7 +28,7 @@ public class AppLoader extends Application {
         Scene loginScene = new Scene(root);
         LoginController lController = loader.getController();
         lController.setListeners(loginScene);
-
+        lController.setConnectionFailText(database.isConnectionFailed());
         primaryStage.setScene(loginScene);
         primaryStage.show();
     }

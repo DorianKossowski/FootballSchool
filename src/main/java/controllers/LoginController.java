@@ -21,11 +21,9 @@ import java.sql.Statement;
 
 public class LoginController {
     @FXML
-    TextField login;
+    TextField login, password;
     @FXML
-    TextField password;
-    @FXML
-    Text userValidError;
+    Text userValidError, connectionFailText;
     @FXML
     Button loginButton;
 
@@ -44,6 +42,10 @@ public class LoginController {
 
         login.textProperty().addListener( observable -> setErrorInvisible());
         password.textProperty().addListener( observable -> setErrorInvisible());
+    }
+
+    public void setConnectionFailText(boolean connectionFailed) {
+        if (connectionFailed) connectionFailText.setVisible(true);
     }
 
     /**

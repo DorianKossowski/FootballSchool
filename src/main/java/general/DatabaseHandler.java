@@ -19,6 +19,8 @@ public class DatabaseHandler {
     private String strSshUser, strSshHost, strRemoteHost, strSshPassword;
     private String databaseUser, databasePassword;
 
+    private boolean connectionFailed;
+
     /**
      * Creates and stores DatabaseHandler instance
      */
@@ -37,6 +39,7 @@ public class DatabaseHandler {
             conn = databaseConn();
         } catch (Exception e) {
             e.printStackTrace();
+            connectionFailed = true;
         }
     }
 
@@ -54,6 +57,7 @@ public class DatabaseHandler {
             databasePassword = in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
+            connectionFailed = true;
         }
     }
 
@@ -84,6 +88,7 @@ public class DatabaseHandler {
             session.setPortForwardingL(localPort, strRemoteHost, remotePort);
         } catch (JSchException e) {
             e.printStackTrace();
+            connectionFailed = true;
         }
     }
 
@@ -124,5 +129,9 @@ public class DatabaseHandler {
      */
     public Connection getConnection() {
         return conn;
+    }
+
+    public boolean isConnectionFailed() {
+        return connectionFailed;
     }
 }
