@@ -1,0 +1,29 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="FootballSchool">
+    <output-path>$PROJECT_DIR$/out/artifacts/FootballSchool</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="main.java.general.AppLoader" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="windowsIcon" value="$PROJECT_DIR$/resources/FSIcon.ico" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="FootballSchool" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="FootballSchool.jar">
+        <element id="module-output" name="FootballSchool" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/jars/jsch-0.1.55.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/jars/poi-4.0.1.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/jars/postgresql-42.2.5.jar" />
+    </root>
+  </artifact>
+</component>

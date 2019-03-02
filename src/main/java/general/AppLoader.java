@@ -34,7 +34,7 @@ public class AppLoader extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         database.closeConnection();
     }
 }

@@ -30,7 +30,8 @@ public class DatabaseHandler {
      * Private constructor, assigns user data and connects with database
      */
     private DatabaseHandler() {
-        getUserData();
+        String dataPath = "@../../resources/inputData.txt";
+        getUserData(dataPath);
         sshTunnelling();
         try {
             conn = databaseConn();
@@ -42,8 +43,8 @@ public class DatabaseHandler {
     /**
      * Reading user data required to ssh tunneling and database connection
      */
-    private void getUserData() {
-        try (BufferedReader in  = new BufferedReader(new FileReader("@../../resources/inputData.txt"))) {
+    private void getUserData(String path) {
+        try (BufferedReader in  = new BufferedReader(new FileReader(path))) {
             strSshUser = in.readLine();
             strSshHost = in.readLine();
             strRemoteHost = in.readLine();
@@ -103,12 +104,14 @@ public class DatabaseHandler {
     /**
      * Closing database connection. Triggering after closing stage.
      */
-    public void closeConnection() {
+    void closeConnection() {
         if (conn != null) {
             try {
                 conn.close();
+                conn = null;
                 System.out.println("Database connection terminated");
                 session.disconnect();
+                session = null;
                 System.out.println("SSH disconnected");
             } catch (Exception e) {
                 System.out.println("Close connection problem");

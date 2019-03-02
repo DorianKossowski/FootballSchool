@@ -7,12 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
+
 
 public class AppPreloader extends Preloader{
-    private Stage preloaderStage;
+    Stage preloaderStage;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         this.preloaderStage = primaryStage;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/preloader.fxml"));
